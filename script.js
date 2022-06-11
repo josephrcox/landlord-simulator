@@ -20,7 +20,7 @@ const residentsPerBuilding = 40
 const percentOfRentAsProfit = 0.2
 
 let gameSpeed = 300
-
+ 
 let renters = []
 
 if (localStorage.history != undefined) {
@@ -128,16 +128,16 @@ function holdDownAction(btn, action, start, speedup) {
 
     }
 
-    btn.onmousedown = function() {
+    btn.onpointerdown = function() {
         repeat();
     }
 
-    btn.onmouseup = function () {
+    btn.onpointerup = function () {
         btn.style.backgroundColor = 'white'
         btn.style.color = 'black'
         clearTimeout(t);
     }
-    btn.onmouseleave = function () {
+    btn.onpointerleave = function () {
         btn.style.backgroundColor = 'white'
         btn.style.color = 'black'
         clearTimeout(t);
