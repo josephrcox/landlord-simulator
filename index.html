@@ -19,10 +19,13 @@
                 <div id="stats-residents">Residents: <div id="stats-residents-value"></div></div>
                 <div id="stats-rating">Rating: <div id="stats-rating-value"></div></div>
             </div>
-            <input type="text" id="name" placeholder="Your company name">
+            <input type="text" id="name" placeholder="Your company name" autocomplete="off">
         </div>
 
         <div class="game-center">
+                <button class="button" id="toggle-speed" data-enabled="false">
+                    <span id="speed">Normal speed</span>
+                </button>
                 <button class="button" id="appts-buy">
                     Buy building
                     <div>

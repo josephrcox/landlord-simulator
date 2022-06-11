@@ -69,6 +69,10 @@ html, body {
   min-width: fit-content;
   padding:5px;
   border:1px solid black;
+        user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   
 }
 
