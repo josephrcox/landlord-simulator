@@ -11,7 +11,13 @@
     <div class="game">
         <div class="game-top">
             <div id="stats">
-                <div id="stats-day">Day: <div id="stats-day-value"></div></div>
+                <button id="toggle-speed" data-enabled="false">
+                    <span id="speed">Normal speed</span>
+                </button>
+                <button id="toggle-pause" data-enabled="false">
+                    <span id="pause">⏸️</span>
+                </button>
+                <div id="stats-month">Month: <div id="stats-month-value">0</div></div>
                 <div id="stats-cash">Cash: $<div id="stats-cash-value"></div></div>
                 <div id="stats-rent">Rent: $<div id="stats-rent-value"></div></div>
                 <div id="stats-appts">Total buildings: <div id="stats-appts-value"></div></div>
@@ -23,9 +29,6 @@
         </div>
 
         <div class="game-center">
-                <button class="button" id="toggle-speed" data-enabled="false">
-                    <span id="speed">Normal speed</span>
-                </button>
                 <button class="button" id="appts-buy">
                     Buy building
                     <div>

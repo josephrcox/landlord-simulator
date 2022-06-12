@@ -59,7 +59,7 @@ html, body {
 }
 
 #stats {
-	font-size: 22px;
+	font-size: 17px;
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -69,7 +69,7 @@ html, body {
   min-width: fit-content;
   padding:5px;
   border:1px solid black;
-        user-select: none;
+    user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -90,4 +90,24 @@ html, body {
     color: white;
     background-color: #442301;
 
+}
+
+#toggle-speed, #toggle-pause {
+    all:unset;
+    cursor: pointer;
+    width:90px;
+    padding-left:10px;
+    background-color: #646161;
+    color:white;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#toggle-pause {
+    background-color: white;
+    width: fit-content;
+    padding-right: 10px;
+    border: 1px solid black;
 }
