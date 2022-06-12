@@ -29,6 +29,7 @@ html, body {
   flex-grow: 1;
   max-height: 170px;
   overflow: scroll;
+  min-height: 170px;
 }
 
 .button {
