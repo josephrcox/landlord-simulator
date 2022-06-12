@@ -12,7 +12,7 @@ const stats_residents_value = document.getElementById('stats-residents-value')
 const stats_rating_value = document.getElementById('stats-rating-value')
 let rating = 0
 
-const logs = document.getElementById('logs')
+// const logs = document.getElementById('logs')
 
 const startingCash = 100000
 const apptCost = 600000
@@ -22,12 +22,14 @@ const percentOfRentAsProfit = 0.2
 let gameSpeed = 5000
 let normalGameSpeed = 5000
 let fastGameSpeed = 1000
+
+let residentLeaveLoss = 0
  
 let renters = []
 
-if (localStorage.history != undefined) {
-    logs.innerHTML = localStorage.history 
-}
+// if (localStorage.history != undefined) {
+//     logs.innerHTML = localStorage.history 
+// }
 
 if (localStorage.companyname != null) {
     document.getElementById('name').value = localStorage.companyname
@@ -318,6 +320,7 @@ function residentLeave(override) {
         if (leaving > 0) {
             log(leaving + " residents left, costing you $"+costForLeaving)
             changeCash(costForLeaving * -1)
+            residentLeaveLoss -= costForLeaving
         }
     }
     
@@ -385,61 +388,61 @@ document.getElementById('toggle-speed').addEventListener('click', function() {
 })
 
 function log(str, bold) {
-    let x = logs.innerHTML
-    if (bold == true) {
-        logs.innerHTML = "<span style='font-weight:700;'>"+str + "</span><br/>" + x
-    } else {
-        logs.innerHTML = str + "<br/>" + x
-    }
+    // let x = logs.innerHTML
+    // if (bold == true) {
+    //     logs.innerHTML = "<span style='font-weight:700;'>"+str + "</span><br/>" + x
+    // } else {
+    //     logs.innerHTML = str + "<br/>" + x
+    // }
 
-    localStorage.history = logs.innerHTML
+    // localStorage.history = logs.innerHTML
 }
-
-let gameTable = document.createElement('table')
-
 
 
 function gameLoopAction() {
     localStorage.month = parseInt(localStorage.month) + 1
     let rentProfit = parseInt(localStorage.residents) * (parseInt(localStorage.rent)*percentOfRentAsProfit)
-    let availLoss = (((parseInt(localStorage.available) * 150))+(parseInt(localStorage.rent)/5)) * -1
-    if (availLoss == -0) {
-        availLoss = 0
+    let availLoss = 0
+    if (parseInt(localStorage.available) > 0) {
+        let availLoss = (((parseInt(localStorage.available) * 150))+(parseInt(localStorage.rent)/5)) * -1
+        if (availLoss == -0) {
+            availLoss = 0
+        }
     }
-    changeCash(rentProfit)
-    changeCash(availLoss)
+
     let residentleavechancebasedonrating = Math.floor(parseInt(localStorage.rating)/12)
     residentLeave(residentleavechancebasedonrating)
     // extras
     let costOfExtras = 0
     if (amenities_pool == "true" || amenities_pool == true) {
-        changeCash((-2000) - (parseInt(localStorage.residents) * 10))
-        costOfExtras += (2000) + (parseInt(localStorage.residents) * 10)
+        costOfExtras -= (2000) + (parseInt(localStorage.residents) * 10)
     }
     if (amenities_freeutilities == "true" || amenities_freeutilities == true) {
         let z = (Math.floor(Math.random() * 200) + 100) * parseInt(localStorage.residents)
-        changeCash(-1 * z)
-        costOfExtras += z
+        costOfExtras += (-1 * z)
     }
     let petrentprofit = (Math.floor(Math.random() * 40) + 20) * (parseInt(localStorage.residents)/8)
+    costOfExtras += petrentprofit
     if (amenities_dogs == "true" || amenities_dogs == true) {
         let z = (parseInt(localStorage.appts) * 100)
-        changeCash(-1 * z)
-        costOfExtras += z
+        costOfExtras += (-1 * z)
     }
     if (amenities_cats == "true" || amenities_cats == true) {
         let z = (parseInt(localStorage.appts) * 50)
-        changeCash(-1 * z)
-        costOfExtras += z
+        costOfExtras += (-1 * z)
     }
-    changeCash(petrentprofit)
-    log("You made $"+petrentprofit+" off of pet rent!")
+    changeCash(costOfExtras)
+    changeCash(rentProfit)
+    changeCash(availLoss)
 
-    log("🎉New month! You made $"+rentProfit+" in rent, and lost $"+(availLoss*-1)+" due to your available units. Other expenses and amenities costed you $"+costOfExtras+". Profit of $"+(rentProfit-(availLoss*-1)-costOfExtras))
+    let amenitiesProfit = costOfExtras
+    let propertyTaxes = (3000 * parseInt(localStorage.appts))*-1
+    let revenueRent = parseInt(localStorage.residents) * (parseInt(localStorage.rent))
 
-
+    syncTable(revenueRent, rentProfit, availLoss, amenitiesProfit, propertyTaxes, residentLeaveLoss)
 
     sync()
+    residentLeaveLoss = 0
 }
 
 ////////////////////////////////
@@ -450,3 +453,84 @@ function gameLoopAction() {
 //     }
     
 // }
+let gameTable = document.createElement('table')
+if (localStorage.history == null) {
+    document.querySelector('.game-bottom').append(gameTable)
+    gameTable.insertRow(0).insertCell(0).innerText = "Month (left is newest)"
+    gameTable.insertRow(1).insertCell(0).innerText = "Rent"
+    gameTable.insertRow(2).insertCell(0).innerText = "Residents"
+    gameTable.insertRow(3).insertCell(0).innerText = "Rating"
+    gameTable.insertRow(4).insertCell(0).innerText = "Cash"
+    gameTable.insertRow(5).insertCell(0).innerText = "Rent (revenue)"
+    gameTable.insertRow(6).insertCell(0).innerText = "Rent (profit)"
+    gameTable.insertRow(7).insertCell(0).innerText = "Amenities (profit)"
+    gameTable.insertRow(8).insertCell(0).innerText = "Taxes"
+    gameTable.insertRow(9).insertCell(0).innerText = "Available appts cost"
+    gameTable.insertRow(10).insertCell(0).innerText = "Lost residents cost"
+    gameTable.insertRow(11).insertCell(0).innerText = "PROFIT"
+        
+} else {
+    gameTable.innerHTML = localStorage.history
+    document.querySelector('.game-bottom').append(gameTable)
+}
+
+function syncTable(revenueRent, rentProfit, availLoss, amenitiesProfit, propertyTaxes, residentLeaveLoss) {
+    let column = 1 // creates columns from the left
+    let badColor = 'red'
+    let goodColor = '#0ac80a'
+    gameTable.rows[0].insertCell(column).innerText = "Month "+localStorage.month
+    gameTable.rows[1].insertCell(column).innerText = "$"+localStorage.rent
+    gameTable.rows[2].insertCell(column).innerText = localStorage.residents
+    gameTable.rows[3].insertCell(column).innerText = document.getElementById('stats-rating-value').innerText
+    gameTable.rows[4].insertCell(column).innerText = "$"+localStorage.cash
+        if (parseInt(localStorage.cash) <= 0) {
+            gameTable.rows[4].cells[1].style.backgroundColor = badColor
+        } else {
+            gameTable.rows[4].cells[1].style.backgroundColor = goodColor
+        }
+        if (gameTable.rows[4].cells.length > 2) {
+            let x = parseInt(gameTable.rows[4].cells[2].innerText.split('$')[1])
+            console.log(x)
+            if (x > parseInt(gameTable.rows[4].cells[1].innerText.split('$')[1])) {
+                gameTable.rows[4].cells[1].innerText += '🔽'
+            } else {
+                gameTable.rows[4].cells[1].innerText += '🔼'
+            }
+        }
+ 
+    gameTable.rows[5].insertCell(column).innerText = "$"+revenueRent
+    gameTable.rows[6].insertCell(column).innerText = "$"+rentProfit
+        if (rentProfit <= 0) {
+            gameTable.rows[6].cells[1].style.backgroundColor = badColor
+        } else {
+            gameTable.rows[6].cells[1].style.backgroundColor = goodColor
+        }
+    gameTable.rows[7].insertCell(column).innerText = "$"+amenitiesProfit
+        if (amenitiesProfit <= 0) {
+            gameTable.rows[7].cells[1].style.backgroundColor = badColor
+        } else {
+            gameTable.rows[7].cells[1].style.backgroundColor = goodColor
+        }
+    gameTable.rows[8].insertCell(column).innerText = "$"+propertyTaxes
+    gameTable.rows[9].insertCell(column).innerText = availLoss +" ("+localStorage.available+")"
+        if (availLoss <= 0) {
+            gameTable.rows[9].cells[1].style.backgroundColor = badColor
+        } else {
+            gameTable.rows[9].cells[1].style.backgroundColor = goodColor
+        }
+    gameTable.rows[10].insertCell(column).innerText = "$"+residentLeaveLoss
+        if (residentLeaveLoss <= 0) {
+            gameTable.rows[10].cells[1].style.backgroundColor = badColor
+        } else {
+            gameTable.rows[10].cells[1].style.backgroundColor = goodColor
+        }
+    gameTable.rows[11].insertCell(column).innerText = "$"+(rentProfit + amenitiesProfit + propertyTaxes + availLoss + residentLeaveLoss)
+        if ((rentProfit + amenitiesProfit + propertyTaxes + availLoss + residentLeaveLoss) <= 0) {
+            gameTable.rows[11].cells[1].style.backgroundColor = badColor
+        } else {
+            gameTable.rows[11].cells[1].style.backgroundColor = goodColor
+        }
+    
+    localStorage.history = gameTable.innerHTML
+}
+
