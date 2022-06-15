@@ -27,6 +27,8 @@ const amenities_pool_rating = 15
 const amenities_freeutilities_rating = 20
 const amenities_dogs_rating = 10
 const amenities_cats_rating = 5
+const resleave_rating = -0.1
+const resjoin_rating = 0.1
 
 let residentLeaveLoss = 0
  
@@ -208,17 +210,18 @@ let cripplingForCash = false
 let cripplingFor = 0
 
 function sync() {
-    if (parseInt(localStorage.rating) >= 100) {
-        stats_rating_value.innerHTML = '😍 <span style="font-size:10px">'+parseInt(localStorage.rating)+'</span>'
+    localStorage.rating = round(parseFloat(localStorage.rating), 3)
+    if (parseFloat(localStorage.rating) >= 100) {
+        stats_rating_value.innerHTML = '😍 <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 3
-    } else if (parseInt(localStorage.rating) >= 75) {
-        stats_rating_value.innerHTML = '🙂 <span style="font-size:10px">'+parseInt(localStorage.rating)+'</span>'
+    } else if (parseFloat(localStorage.rating) >= 75) {
+        stats_rating_value.innerHTML = '🙂 <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 2
-    } else if (parseInt(localStorage.rating) >= 25) {
-        stats_rating_value.innerHTML = '😐 <span style="font-size:10px">'+parseInt(localStorage.rating)+'</span>'
+    } else if (parseFloat(localStorage.rating) >= 25) {
+        stats_rating_value.innerHTML = '😐 <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 1
-    } else if (parseInt(localStorage.rating) >= 0) {
-        stats_rating_value.innerHTML = '☹️ <span style="font-size:10px">'+parseInt(localStorage.rating)+'</span>'
+    } else if (parseFloat(localStorage.rating) >= 0) {
+        stats_rating_value.innerHTML = '☹️ <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 0
     }
     togglePool.dataset.enabled = localStorage.amenities_pool
@@ -280,17 +283,14 @@ function rentOut() {
     if (parseInt(localStorage.cash) >= parseInt(localStorage.rent)) {
         if (parseInt(localStorage.available) > 0) {
             let x = (Math.floor(Math.random() * (100 + (parseInt(localStorage.rent)/5))))
-            let chance = x <= parseInt(localStorage.rating)
+            let chance = x <= parseFloat(localStorage.rating)
             if (chance) {
                 changeCash((parseInt(localStorage.rent) / 20) * -1)
                 log("Unit was rented out. Total costs to rent out were $"+(parseInt(localStorage.rent) / 20))
                 localStorage.residents = parseInt(localStorage.residents) + 1
                 localStorage.available = parseInt(localStorage.available) - 1
                 renters.push(parseInt(localStorage.rent))
-                if (parseInt(localStorage.residents) % 10 === 0) {
-                    changeRating(-1)
-                }
-
+                changeRating(0.1)
             } else {
                 log("Couldn't find a good candidate, spent $"+(parseInt(localStorage.rent) / 80))
                 changeCash((parseInt(localStorage.rent) / 80) * -1)
@@ -328,9 +328,10 @@ function residentLeave(override) {
             }
         }
         if (leaving > 0){
-            if (parseInt(localStorage.residents) % 10 === 0) {
-                changeRating(1)
+            for (let i=0;i<leaving;i++) {
+                changeRating(-0.1)
             }
+
         }
 
         localStorage.residents = parseInt(localStorage.residents) - leaving
@@ -349,8 +350,8 @@ function changeCash(x) {
     localStorage.cash = parseInt(localStorage.cash) + x
 }
 function changeRating(x) {
-    localStorage.rating = parseInt(localStorage.rating) + x
-    if (parseInt(localStorage.rating) < 0) {
+    localStorage.rating = parseFloat(localStorage.rating) + x
+    if (parseFloat(localStorage.rating) < 0) {
         localStorage.rating = 0
     }
 }
@@ -429,7 +430,7 @@ function gameLoopAction() {
         }
     }
 
-    let residentleavechancebasedonrating = Math.floor(parseInt(localStorage.rating)/12)
+    let residentleavechancebasedonrating = Math.floor(parseFloat(localStorage.rating)/12)
     residentLeave(residentleavechancebasedonrating)
     // extras
     let costOfExtras = 0
@@ -568,3 +569,7 @@ restart.addEventListener('click', function() {
     localStorage.clear()
     window.location.reload()
 })
+
+function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+  }
