@@ -23,6 +23,11 @@ let gameSpeed = 5000
 let normalGameSpeed = 5000
 let fastGameSpeed = 1000
 
+const amenities_pool_rating = 15
+const amenities_freeutilities_rating = 20
+const amenities_dogs_rating = 10
+const amenities_cats_rating = 5
+
 let residentLeaveLoss = 0
  
 let renters = []
@@ -59,14 +64,14 @@ togglePool.addEventListener('click', function() {
         togglePool.dataset.enabled = 'false'
         localStorage.setItem('amenities_pool', false) 
         amenities_pool = false
-        changeRating(-25)
+        changeRating(-1 * amenities_pool_rating)
     } else {
         if (parseInt(localStorage.cash) >= 50000) {
             togglePool.dataset.enabled = 'true'
             localStorage.setItem('amenities_pool', true) 
             amenities_pool = true
             changeCash(-50000)
-            changeRating(25)
+            changeRating(amenities_pool_rating)
             log("You bought a pool. Your residents will love this!")
         }
 
@@ -77,12 +82,12 @@ toggleFreeUtilities.addEventListener('click', function() {
         toggleFreeUtilities.dataset.enabled = 'false'
         localStorage.setItem('amenities_freeutilities', false) 
         amenities_freeutilities = false
-        changeRating(-35)
+        changeRating(-1 * amenities_freeutilities_rating)
     } else {
         toggleFreeUtilities.dataset.enabled = 'true'
         localStorage.setItem('amenities_freeutilities', true) 
         amenities_freeutilities = true
-        changeRating(35)
+        changeRating(amenities_freeutilities_rating)
         log("Your residents no longer pay for utilities, imagine the savings! (for them)")
 
     }
@@ -92,12 +97,12 @@ toggleDogs.addEventListener('click', function() {
         toggleDogs.dataset.enabled = 'false'
         localStorage.setItem('amenities_dogs', false) 
         amenities_dogs = false
-        changeRating(-25)
+        changeRating(-1 * amenities_dogs_rating)
     } else {
         toggleDogs.dataset.enabled = 'true'
         localStorage.setItem('amenities_dogs', true) 
         amenities_dogs = true
-        changeRating(25)
+        changeRating(amenities_dogs_rating)
         log("Woof woof")
 
     }
@@ -107,12 +112,12 @@ toggleCats.addEventListener('click', function() {
         toggleCats.dataset.enabled = 'false'
         localStorage.setItem('amenities_cats', false) 
         amenities_cats = false
-        changeRating(-15)
+        changeRating(-1 * amenities_cats_rating)
     } else {
         toggleCats.dataset.enabled = 'true'
         localStorage.setItem('amenities_cats', true) 
         amenities_cats = true
-        changeRating(15)
+        changeRating(amenities_cats_rating)
         log("Meow meow")
 
     }
@@ -168,6 +173,7 @@ window.onload = function() {
     stats_cash_value.innerText = localStorage.getItem('cash')
     if (localStorage.appts == null) {
         localStorage.setItem('appts', 1)
+        localStorage.setItem('gameover', false)
     } 
     stats_appts_value.innerText = localStorage.getItem('appts')
     if (localStorage.available == null) {
@@ -194,6 +200,7 @@ window.onload = function() {
     if (localStorage.amenities_cats == null) {
         localStorage.setItem('amenities_cats', false) 
     }
+    
     sync()
 }
 
@@ -201,12 +208,6 @@ let cripplingForCash = false
 let cripplingFor = 0
 
 function sync() {
-    stats_cash_value.innerText = localStorage.cash
-    stats_appts_value.innerText = localStorage.appts
-    stats_rent_value.innerText = localStorage.rent
-    stats_available_value.innerText = localStorage.available
-    stats_residents_value.innerText = localStorage.residents
-    stats_month_value.innerText = localStorage.month
     if (parseInt(localStorage.rating) >= 100) {
         stats_rating_value.innerHTML = '😍 <span style="font-size:10px">'+parseInt(localStorage.rating)+'</span>'
         rating = 3
@@ -239,6 +240,13 @@ function sync() {
         cripplingFor = 0
         log("You are no longer crippling for cash")
     }
+
+    stats_cash_value.innerText = localStorage.cash
+    stats_appts_value.innerText = localStorage.appts
+    stats_rent_value.innerText = localStorage.rent
+    stats_available_value.innerText = localStorage.available
+    stats_residents_value.innerText = localStorage.residents
+    stats_month_value.innerText = localStorage.month
 }
 
 function newAppt() {
@@ -279,6 +287,10 @@ function rentOut() {
                 localStorage.residents = parseInt(localStorage.residents) + 1
                 localStorage.available = parseInt(localStorage.available) - 1
                 renters.push(parseInt(localStorage.rent))
+                if (parseInt(localStorage.residents) % 10 === 0) {
+                    changeRating(-1)
+                }
+
             } else {
                 log("Couldn't find a good candidate, spent $"+(parseInt(localStorage.rent) / 80))
                 changeCash((parseInt(localStorage.rent) / 80) * -1)
@@ -289,6 +301,7 @@ function rentOut() {
         log("You can not afford to rent this out")
     }
     sync()
+
 }
 
 function residentLeave(override) {
@@ -314,6 +327,12 @@ function residentLeave(override) {
                 leaving = leaving * 3
             }
         }
+        if (leaving > 0){
+            if (parseInt(localStorage.residents) % 10 === 0) {
+                changeRating(1)
+            }
+        }
+
         localStorage.residents = parseInt(localStorage.residents) - leaving
         localStorage.available = parseInt(localStorage.available) + leaving
         let costForLeaving = (leaving * (parseInt(localStorage.rent) * 2))
@@ -404,7 +423,7 @@ function gameLoopAction() {
     let rentProfit = parseInt(localStorage.residents) * (parseInt(localStorage.rent)*percentOfRentAsProfit)
     let availLoss = 0
     if (parseInt(localStorage.available) > 0) {
-        let availLoss = (((parseInt(localStorage.available) * 150))+(parseInt(localStorage.rent)/5)) * -1
+        availLoss = (((parseInt(localStorage.available) * 150))+(parseInt(localStorage.rent)/5)) * -1
         if (availLoss == -0) {
             availLoss = 0
         }
@@ -445,15 +464,8 @@ function gameLoopAction() {
     residentLeaveLoss = 0
 }
 
-////////////////////////////////
-
-// function testLoop(x) {
-//     for (let i=0;i<x;i++) {
-//         console.log(Math.floor(Math.random() * parseInt(localStorage.rent)/10) + 1)
-//     }
-    
-// }
 let gameTable = document.createElement('table')
+gameTable.classList.add('history_table')
 if (localStorage.history == null) {
     document.querySelector('.game-bottom').append(gameTable)
     gameTable.insertRow(0).insertCell(0).innerText = "Month (left is newest)"
@@ -490,7 +502,6 @@ function syncTable(revenueRent, rentProfit, availLoss, amenitiesProfit, property
         }
         if (gameTable.rows[4].cells.length > 2) {
             let x = parseInt(gameTable.rows[4].cells[2].innerText.split('$')[1])
-            console.log(x)
             if (x > parseInt(gameTable.rows[4].cells[1].innerText.split('$')[1])) {
                 gameTable.rows[4].cells[1].innerText += '🔽'
             } else {
@@ -534,3 +545,26 @@ function syncTable(revenueRent, rentProfit, availLoss, amenitiesProfit, property
     localStorage.history = gameTable.innerHTML
 }
 
+
+
+const help_modal = document.getElementById('helpmodal')
+const restart = document.getElementById('restart')
+if (localStorage.gameover == "true") {
+    gameOver()
+}
+
+function gameOver() {
+    pause()
+    help_modal.style.display = 'block'
+    localStorage.gameover = true
+    let elem = document.querySelector('.history_table')
+    let clone = elem.cloneNode(true)
+    document.getElementById('modal_history_table').append(clone)
+    document.querySelector('.game').innerHTML = ""
+    document.querySelector('.game').style.backgroundColor = "black"
+}
+
+restart.addEventListener('click', function() {
+    localStorage.clear()
+    window.location.reload()
+})
