@@ -1,0 +1,9 @@
+{
+    "buildings":[
+        {
+            "rent":0,
+            "residents":0,
+            "available":40
+        }
+    ]
+}

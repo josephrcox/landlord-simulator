@@ -5,7 +5,7 @@ import { changeCash, changeRating } from "./modifiers.js"
 
 const appt_buy = document.getElementById('appts-buy')
 const appt_rent = document.getElementById('appts-rent')
-const rent_inc = document.getElementById('rent-inc')
+const rent_inc = document.getElementById('rent-inc') 
 const rent_dec = document.getElementById('rent-dec')
 
 const stats_month_value = document.getElementById('stats-month-value')
@@ -15,6 +15,9 @@ const stats_appts_value = document.getElementById('stats-appts-value')
 const stats_available_value = document.getElementById('stats-available-value')
 const stats_residents_value = document.getElementById('stats-residents-value')
 const stats_rating_value = document.getElementById('stats-rating-value')
+
+const game_center = document.querySelector('.game-center')
+
 let rating = 0
 
 // const logs = document.getElementById('logs')
@@ -39,6 +42,15 @@ const salary_RA = 7000
 let residentLeaveLoss = 0
  
 let renters = []
+
+const defaultGameSchema = {
+        "buildings":[
+            {
+                "rent":0,
+                "residents":0
+            }
+        ]
+}
 
 // if (localStorage.history != undefined) {
 //     logs.innerHTML = localStorage.history 
@@ -151,68 +163,48 @@ function holdDownAction(btn, action, start, speedup) {
         clearTimeout(t);
     }
 };
-holdDownAction(appt_buy, newAppt, 50, 500);
-holdDownAction(appt_rent, rentOut, 50, 0);
-holdDownAction(rent_inc, incRent, 50, 1);
-holdDownAction(rent_dec, decRent, 50, 1);
+// holdDownAction(appt_buy, newAppt, 50, 500);
+// holdDownAction(appt_rent, rentOut, 50, 0);
+// holdDownAction(rent_inc, incRent, 50, 1);
+// holdDownAction(rent_dec, decRent, 50, 1);
 
 ////////////////////////////////
 window.onload = function() {
     table_init()
-    if (localStorage.month == null || isNaN(localStorage.month) ) {
+    if (localStorage.month == null || isNaN(localStorage.month) || localStorage.cash == null || localStorage.currentScenario == null || isNaN(localStorage.cash)) {
         localStorage.setItem('month', 1)
-    } 
-    stats_month_value.innerText = localStorage.getItem('day')
-    if (localStorage.rent == null) {
         localStorage.setItem('rent', 0)
-    } 
-    stats_rent_value.innerText = "$"+parseInt(localStorage.rent).toLocaleString()
-    if (localStorage.cash == null) {
+
+        localStorage.setItem('game', JSON.stringify(defaultGameSchema))
         localStorage.setItem('cash', startingCash)
-    } 
-    stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
-    if (localStorage.appts == null) {
         localStorage.setItem('appts', 1)
         localStorage.setItem('gameover', false)
-    } 
-    stats_appts_value.innerText = localStorage.getItem('appts')
-    if (localStorage.available == null) {
         localStorage.setItem('available', residentsPerBuilding)
-    } 
-    stats_available_value.innerText = localStorage.getItem('available')
-    if (localStorage.residents == null) {
         localStorage.setItem('residents', 0)
+        localStorage.setItem('rating', 50)
+        localStorage.setItem('amenities_pool', false) 
+        localStorage.setItem('amenities_freeutilities', false) 
+        localStorage.setItem('amenities_dogs', false) 
+        localStorage.setItem('amenities_cats', false) 
+        localStorage.currentScenario = -1
+        localStorage.rentalAssistants = 0
     } 
+    stats_month_value.innerText = localStorage.getItem('day')
+    stats_rent_value.innerText = "$"+parseInt(localStorage.rent).toLocaleString()
+    stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
+    stats_appts_value.innerText = localStorage.getItem('appts')
+    stats_available_value.innerText = localStorage.getItem('available')
     stats_residents_value.innerText = localStorage.getItem('residents')
 
-    if (localStorage.rating == null) {
-        localStorage.setItem('rating', 50)
-    } 
-    if (localStorage.amenities_pool == null) {
-        localStorage.setItem('amenities_pool', false) 
-    }
-    if (localStorage.amenities_freeutilities == null) {
-        localStorage.setItem('amenities_freeutilities', false) 
-    }
-    if (localStorage.amenities_dogs == null) {
-        localStorage.setItem('amenities_dogs', false) 
-    }
-    if (localStorage.amenities_cats == null) {
-        localStorage.setItem('amenities_cats', false) 
-    }
     if (localStorage.gameover == "true") {
         gameOver()
     }
-    if (localStorage.currentScenario == null) {
-        localStorage.currentScenario = -1
-    } else {
+    if (localStorage.currentScenario != null) {
         if (parseInt(localStorage.currentScenario) >= 0) {
             newScenario(parseInt(localStorage.currentScenario))
         }
     }
-    if (localStorage.rentalAssistants == null) {
-        localStorage.rentalAssistants = 0
-    }
+
     sync()
 }
 
@@ -240,25 +232,107 @@ export function sync() {
     toggleCats.dataset.enabled = localStorage.amenities_cats
 
     stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
-    stats_appts_value.innerText = localStorage.appts
+    stats_appts_value.innerText = JSON.parse(localStorage.game).buildings.length
     stats_rent_value.innerText = "$"+parseInt(localStorage.rent).toLocaleString()
-    stats_available_value.innerText = localStorage.available
+    let totalAvailable = 0
+    for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++) {
+        totalAvailable += (40 - JSON.parse(localStorage.game).buildings[i].residents)
+    }
+    stats_available_value.innerText = totalAvailable
     stats_residents_value.innerText = localStorage.residents
     stats_month_value.innerText = localStorage.month
+
+    game_center.innerHTML = ""
+    for (let i=0;i<JSON.parse(localStorage.game).buildings.length + 1;i++) {
+        if (i < JSON.parse(localStorage.game).buildings.length) {
+            const a = document.createElement('div')
+            a.classList.add('building')
+            a.dataset.index = i
+        
+            if (JSON.parse(localStorage.game).buildings[i].residents < 40) {
+                const head = document.createElement('div')
+                head.classList.add('building_head')
+                const rent = document.createElement('button')
+                rent.classList.add('button')
+                rent.innerHTML = "Rent out"
+
+                rent.onclick = function() {
+                    console.log(rent)
+                    rentOut(a.dataset.index)
+                }
+                rent.classList.add('building_rentout')
+                
+                head.append(rent)
+                a.append(head)
+            }
+
+        
+            const bottom = document.createElement('div')
+            bottom.classList.add('building_bottom')
+            const dec = document.createElement('button')
+            dec.classList.add('button')
+            dec.innerHTML = "-"
+            bottom.append(dec)
+            const rentSpan = document.createElement('span')
+            rentSpan.innerHTML = "$"+JSON.parse(localStorage.game).buildings[i].rent.toLocaleString()
+            rentSpan.classList.add('building_rent')
+            bottom.append(rentSpan)
+            const inc = document.createElement('button')
+            inc.classList.add('button')
+            inc.innerHTML = "+"
+            inc.onclick = function() {
+                incRent(a.dataset.index)
+            }
+            bottom.append(inc)
+            a.append(bottom)
+        
+            game_center.append(a)
+        } else {
+            const a = document.createElement('div')
+            a.classList.add('building')
+            a.style.filter = 'grayscale()'
+        
+            const head = document.createElement('div')
+            head.classList.add('building_head')
+            const buy = document.createElement('button')
+            buy.classList.add('button')
+            buy.innerHTML = "Buy new building"
+            buy.onclick = function() {
+                newAppt()
+            }
+            buy.style.fontSize = ""
+            buy.style.marginBottom = "5px"
+            const subtitle = document.createElement('div')
+            subtitle.innerHTML = "$600,000"
+            head.append(buy, subtitle)
+            a.append(head)
+        
+            game_center.append(a)
+        }
+    }
 }
 
 function newAppt() {
     if (parseInt(localStorage.cash) >= apptCost) {
         localStorage.cash = parseInt(localStorage.cash) - apptCost 
-        localStorage.appts = parseInt(localStorage.appts) + 1
-        localStorage.available = parseInt(localStorage.available) + residentsPerBuilding
+        let b = JSON.parse(localStorage.game)
+        b.buildings.push({
+            "rent":0,
+            "residents":0,
+            "available":40
+        })
+        localStorage.game = JSON.stringify(b)
         sync()
     }
    
 }
 
-function incRent() {
-    localStorage.rent = parseInt(localStorage.rent) + 40
+function incRent(building) {
+
+    let b = JSON.parse(localStorage.game)
+    b.buildings[building].rent += 40
+    localStorage.game = JSON.stringify(b)
+
     if (Math.random() >= 0.8) {
         residentLeave()
     }
@@ -272,15 +346,18 @@ function decRent() {
     sync()
 }
 
-function rentOut() {
-    if (parseInt(localStorage.cash) >= parseInt(localStorage.rent)) {
-        if (parseInt(localStorage.available) > 0) {
+function rentOut(building) {
+    console.log(building)
+    if (parseInt(localStorage.cash) >= JSON.parse(localStorage.game).buildings[building].rent) {
+        console.log(JSON.parse(localStorage.game).buildings[building].residents)
+        if (JSON.parse(localStorage.game).buildings[building].residents < 40) {
             let x = (Math.floor(Math.random() * (100 + (parseInt(localStorage.rent)/5))))
             let chance = x <= parseFloat(localStorage.rating)
             if (chance) {
                 changeCash((parseInt(localStorage.rent) / 20) * -1)
-                localStorage.residents = parseInt(localStorage.residents) + 1
-                localStorage.available = parseInt(localStorage.available) - 1
+                let b = JSON.parse(localStorage.game)
+                b.buildings[building].residents = b.buildings[building].residents + 1
+                localStorage.game = JSON.stringify(b)
                 renters.push(parseInt(localStorage.rent))
                 changeRating(0.1)
             } else {

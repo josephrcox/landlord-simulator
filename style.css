@@ -1,19 +1,51 @@
+
+@font-face {
+  font-family: "lora";
+  src: url("/font/Lora-VariableFont_wght.ttf");
+}
+
 body {
   font-family: 'Lora', serif;
+}
+
+
+.building {
+  width: 250px;
+  height: 295px;
+  /*! border: 1px solid black; */
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-block: 10px;
+  justify-content: space-evenly;
+  	background-image: url("/Frame 14.svg");
+	background-size: cover;
+  background-repeat: no-repeat;
+  padding-top: 30px;
+  flex-wrap: wrap;
+}
+
+
+.building_rent {
+  margin-inline: 15px;
+  font-size: 22px;
+}
+
+
+.button.building_rentout {
+  font-size: 32px;
 }
 
 .game {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /*! height: 100%; */
 }
 
 .game-top, .game-center, .game-bottom {
-  border: 1px solid black;
+  /*! border: 1px solid black; */
 }
 
-.game-top {
-}
 html, body {
 height: 100%;
 width: 100%;
@@ -26,15 +58,16 @@ flex-grow: 5;
 padding-left: 5px;
 padding-right: 5px;
 text-align: center;
-overflow-x: scroll;
+margin-top: 7px;
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
 }
 
 
 .game-bottom, #modal_history_table, #scenario_history_table {
 flex-grow: 1;
-max-height: 300px;
 overflow: scroll;
-min-height: 170px;
 }
 
 .button {
@@ -53,6 +86,8 @@ min-height: 170px;
   -webkit-user-select: none;
   -ms-user-select: none;
   cursor: pointer;
+  padding-inline:15px;
+  resize: none;
 }
 
 .button>div {
