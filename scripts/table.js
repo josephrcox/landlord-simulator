@@ -32,10 +32,10 @@ export function syncTable(revenueRent, rentProfit, availLoss, amenitiesProfit, p
     let badColor = 'red'
     let goodColor = '#0ac80a'
     gameTable.rows[0].insertCell(column).innerText = "Month "+localStorage.month
-    gameTable.rows[1].insertCell(column).innerText = "$"+localStorage.rent
+    gameTable.rows[1].insertCell(column).innerText = "$"+localStorage.rent.toLocaleString()
     gameTable.rows[2].insertCell(column).innerText = localStorage.residents
     gameTable.rows[3].insertCell(column).innerText = document.getElementById('stats-rating-value').innerText
-    gameTable.rows[4].insertCell(column).innerText = "$"+localStorage.cash
+    gameTable.rows[4].insertCell(column).innerText = "$"+parseInt(localStorage.cash).toLocaleString()
         if (parseInt(localStorage.cash) <= 0) {
             gameTable.rows[4].cells[1].style.backgroundColor = badColor
         } else {
@@ -50,35 +50,35 @@ export function syncTable(revenueRent, rentProfit, availLoss, amenitiesProfit, p
             }
         }
  
-    gameTable.rows[5].insertCell(column).innerText = "$"+revenueRent
-    gameTable.rows[6].insertCell(column).innerText = "$"+rentProfit
+    gameTable.rows[5].insertCell(column).innerText = "$"+revenueRent.toLocaleString()
+    gameTable.rows[6].insertCell(column).innerText = "$"+rentProfit.toLocaleString()
         if (rentProfit <= 0) {
             gameTable.rows[6].cells[1].style.backgroundColor = badColor
         } else {
             gameTable.rows[6].cells[1].style.backgroundColor = goodColor
         }
-    gameTable.rows[7].insertCell(column).innerText = "$"+amenitiesProfit
+    gameTable.rows[7].insertCell(column).innerText = "$"+amenitiesProfit.toLocaleString()
         if (amenitiesProfit <= 0) {
             gameTable.rows[7].cells[1].style.backgroundColor = badColor
         } else {
             gameTable.rows[7].cells[1].style.backgroundColor = goodColor
         }
-    gameTable.rows[8].insertCell(column).innerText = "$"+propertyTaxes
-    gameTable.rows[9].insertCell(column).innerText = availLoss +" ("+localStorage.available+")"
+    gameTable.rows[8].insertCell(column).innerText = "$"+propertyTaxes.toLocaleString()
+    gameTable.rows[9].insertCell(column).innerText = availLoss.toLocaleString() +" ("+localStorage.available+")"
         if (availLoss <= 0) {
             gameTable.rows[9].cells[1].style.backgroundColor = badColor
         } else {
             gameTable.rows[9].cells[1].style.backgroundColor = goodColor
         }
-    gameTable.rows[10].insertCell(column).innerText = "$"+residentLeaveLoss
+    gameTable.rows[10].insertCell(column).innerText = "$"+residentLeaveLoss.toLocaleString()
         if (residentLeaveLoss <= 0) {
             gameTable.rows[10].cells[1].style.backgroundColor = badColor
         } else {
             gameTable.rows[10].cells[1].style.backgroundColor = goodColor
         }
-    gameTable.rows[11].insertCell(column).innerText = "$"+staffSalaries
+    gameTable.rows[11].insertCell(column).innerText = "$"+staffSalaries.toLocaleString()
     
-    gameTable.rows[12].insertCell(column).innerText = "$"+(rentProfit + amenitiesProfit + propertyTaxes + availLoss + residentLeaveLoss)
+    gameTable.rows[12].insertCell(column).innerText = "$"+(rentProfit + amenitiesProfit + propertyTaxes + availLoss + residentLeaveLoss).toLocaleString()
         if ((rentProfit + amenitiesProfit + propertyTaxes + availLoss + residentLeaveLoss) <= 0) {
             gameTable.rows[12].cells[1].style.backgroundColor = badColor
         } else {

@@ -78,7 +78,6 @@ togglePool.addEventListener('click', function() {
             amenities_pool = true
             changeCash(-50000)
             changeRating(amenities_pool_rating)
-            log("You bought a pool. Your residents will love this!")
         }
 
     }
@@ -94,8 +93,6 @@ toggleFreeUtilities.addEventListener('click', function() {
         localStorage.setItem('amenities_freeutilities', true) 
         amenities_freeutilities = true
         changeRating(amenities_freeutilities_rating)
-        log("Your residents no longer pay for utilities, imagine the savings! (for them)")
-
     }
 })
 toggleDogs.addEventListener('click', function() {
@@ -109,8 +106,6 @@ toggleDogs.addEventListener('click', function() {
         localStorage.setItem('amenities_dogs', true) 
         amenities_dogs = true
         changeRating(amenities_dogs_rating)
-        log("Woof woof")
-
     }
 })
 toggleCats.addEventListener('click', function() {
@@ -124,8 +119,6 @@ toggleCats.addEventListener('click', function() {
         localStorage.setItem('amenities_cats', true) 
         amenities_cats = true
         changeRating(amenities_cats_rating)
-        log("Meow meow")
-
     }
 })
 
@@ -173,11 +166,11 @@ window.onload = function() {
     if (localStorage.rent == null) {
         localStorage.setItem('rent', 0)
     } 
-    stats_rent_value.innerText = localStorage.getItem('rent')
+    stats_rent_value.innerText = "$"+parseInt(localStorage.rent).toLocaleString()
     if (localStorage.cash == null) {
         localStorage.setItem('cash', startingCash)
     } 
-    stats_cash_value.innerText = localStorage.getItem('cash')
+    stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
     if (localStorage.appts == null) {
         localStorage.setItem('appts', 1)
         localStorage.setItem('gameover', false)
@@ -246,24 +239,9 @@ export function sync() {
     toggleDogs.dataset.enabled = localStorage.amenities_dogs
     toggleCats.dataset.enabled = localStorage.amenities_cats
 
-    if (parseInt(localStorage.cash) < 1) {
-        cripplingForCash = true
-        cripplingFor += 1
-        if (cripplingFor >= 6) {
-            gameOver()
-        } else {
-            log("You are too low on funds! "+(6 - cripplingFor) +" months until game over", true)
-        }
-    }
-    if (parseInt(localStorage.cash) >= 1 && cripplingFor > 0) {
-        cripplingForCash = false
-        cripplingFor = 0
-        log("You are no longer crippling for cash")
-    }
-
-    stats_cash_value.innerText = localStorage.cash
+    stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
     stats_appts_value.innerText = localStorage.appts
-    stats_rent_value.innerText = localStorage.rent
+    stats_rent_value.innerText = "$"+parseInt(localStorage.rent).toLocaleString()
     stats_available_value.innerText = localStorage.available
     stats_residents_value.innerText = localStorage.residents
     stats_month_value.innerText = localStorage.month
@@ -285,13 +263,11 @@ function incRent() {
         residentLeave()
     }
     changeRating(-1)
-    log("Rent was increased to "+localStorage.rent)
     sync()
 }
 
 function decRent() {
     localStorage.rent = parseInt(localStorage.rent) - 40
-    log("Rent was decreased to "+localStorage.rent)
     changeRating(1)
     sync()
 }
@@ -303,19 +279,15 @@ function rentOut() {
             let chance = x <= parseFloat(localStorage.rating)
             if (chance) {
                 changeCash((parseInt(localStorage.rent) / 20) * -1)
-                log("Unit was rented out. Total costs to rent out were $"+(parseInt(localStorage.rent) / 20))
                 localStorage.residents = parseInt(localStorage.residents) + 1
                 localStorage.available = parseInt(localStorage.available) - 1
                 renters.push(parseInt(localStorage.rent))
                 changeRating(0.1)
             } else {
-                log("Couldn't find a good candidate, spent $"+(parseInt(localStorage.rent) / 80))
                 changeCash((parseInt(localStorage.rent) / 80) * -1)
             }
     
         }
-    } else {
-        log("You can not afford to rent this out")
     }
     sync()
 
@@ -355,7 +327,6 @@ function residentLeave(override) {
         localStorage.available = parseInt(localStorage.available) + leaving
         let costForLeaving = (leaving * (parseInt(localStorage.rent) * 2))
         if (leaving > 0) {
-            log(leaving + " residents left, costing you $"+costForLeaving)
             changeCash(costForLeaving * -1)
             residentLeaveLoss -= costForLeaving
         }
@@ -383,7 +354,6 @@ export function pause() {
         document.getElementById('pause').innerText = '▶️'
         document.getElementById('toggle-pause').style.backgroundColor = 'black'
     }
-    log("paused:"+paused)
 }
 
 document.getElementById('toggle-pause').addEventListener('click', pause)
@@ -413,18 +383,6 @@ document.getElementById('toggle-speed').addEventListener('click', function() {
         document.getElementById('toggle-speed').style.fontWeight = '300'
     }
 })
-
-function log(str, bold) {
-    // let x = logs.innerHTML
-    // if (bold == true) {
-    //     logs.innerHTML = "<span style='font-weight:700;'>"+str + "</span><br/>" + x
-    // } else {
-    //     logs.innerHTML = str + "<br/>" + x
-    // }
-
-    // localStorage.history = logs.innerHTML
-}
-
 
 function gameLoopAction() {
     localStorage.month = parseInt(localStorage.month) + 1
@@ -463,17 +421,31 @@ function gameLoopAction() {
     changeCash(availLoss)
 
     let amenitiesProfit = costOfExtras
-    let propertyTaxes = ((3000 * parseInt(localStorage.appts)) * ((parseInt(localStorage.appts) * 0.1) + 1))*-1
+    let propertyTaxes = (Math.round((600 * parseInt(localStorage.appts)) * ((parseFloat(localStorage.appts) * 1.3) + 1))*-1)
+    changeCash(propertyTaxes)
     let revenueRent = parseInt(localStorage.residents) * (parseInt(localStorage.rent))
-    let staffSalaries = (parseInt(localStorage.rentalAssistants) * (salary_RA - (parseInt(localStorage.residents) * 12)))
+    let staffSalaries = (parseInt(localStorage.rentalAssistants) * (salary_RA + (parseInt(localStorage.residents) * 12)))
     syncTable(revenueRent, rentProfit, availLoss, amenitiesProfit, propertyTaxes, residentLeaveLoss, staffSalaries)
 
     sync()
     residentLeaveLoss = 0
     let z = Math.random() * 1000
-    console.log(z)
+
     if (z > 995 && (parseInt(localStorage.appts) > 1)) {
         newScenario()
+    }
+
+    if (parseInt(localStorage.cash) < 1) {
+        cripplingForCash = true
+        cripplingFor += 1
+        if (cripplingFor >= 6) {
+            gameOver()
+        } else {
+        }
+    }
+    if (parseInt(localStorage.cash) >= 1 && cripplingFor > 0) {
+        cripplingForCash = false
+        cripplingFor = 0
     }
 }
 

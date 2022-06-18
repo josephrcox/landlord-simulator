@@ -28,5 +28,5 @@ export function changePool(x) {
 
 export function hireRentalAssistant() {
     localStorage.rentalAssistants = parseInt(localStorage.rentalAssistants) + 1
-    
+    console.log(localStorage.rentalAssistants)
 }
