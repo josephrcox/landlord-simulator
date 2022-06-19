@@ -44,6 +44,14 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
     },
+    {
+        title:"One of your apartment buildings has burned down. Luckily, nobody was hurt. ",
+        a:"",
+        b:"",
+        a_outcome:"",
+        b_outcome:"",
+        alertMSG:"",
+    },
 ]
 
 

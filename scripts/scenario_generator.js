@@ -8,6 +8,11 @@ const a = document.getElementById('a')
 const b = document.getElementById('b')
 
 export function newScenario(override) {
+    let totalResidents = 0
+    for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++) {
+        totalResidents +=  JSON.parse(localStorage.game).buildings[i].residents
+    }
+
     let x = Math.floor(Math.random() * scenarios_list.length)
     if (override) {
         x = override;
@@ -57,7 +62,7 @@ function optionChosen(choice) {
                 changeResidents(parseInt(y[1]))
                 break;
             case "cashPerResident":
-                changeCash(parseInt(y[1]) * parseInt(localStorage.residents))
+                changeCash(parseInt(y[1]) * totalResidents)
                 break;
             case "amenities_pool":
                 changePool(y[1])
