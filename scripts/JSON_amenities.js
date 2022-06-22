@@ -2,7 +2,7 @@ export const amenities_list = [
     {
         title:"Pool",
         id:"pool",
-        happiness:30,
+        happiness:15,
         cost_upfront:200000,
         cost_upfront_per_building:0,
         cost_monthly:2000,
@@ -18,7 +18,7 @@ export const amenities_list = [
     {
         title:"Free Utilities",
         id:"freeutilities",
-        happiness:20,
+        happiness:10,
         cost_upfront:0,
         cost_upfront_per_building:0,
         cost_monthly:0,
@@ -34,7 +34,7 @@ export const amenities_list = [
     {
         title:"Dogs are allowed",
         id:"dogs",
-        happiness:10,
+        happiness:5,
         cost_upfront:0,
         cost_upfront_per_building:0,
         cost_monthly:0,
@@ -50,7 +50,7 @@ export const amenities_list = [
     {
         title:"Cats are allowed",
         id:"cats",
-        happiness:8,
+        happiness:4,
         cost_upfront:0,
         cost_upfront_per_building:0,
         cost_monthly:0,
@@ -66,7 +66,7 @@ export const amenities_list = [
     {
         title:"Improved Security",
         id:"security",
-        happiness:20,
+        happiness:10,
         cost_upfront:80000,
         cost_upfront_per_building:0,
         cost_monthly:0,
@@ -82,7 +82,7 @@ export const amenities_list = [
     {
         title:"Improved parking",
         id:"parking",
-        happiness:12,
+        happiness:6,
         cost_upfront:30000,
         cost_upfront_per_building:0,
         cost_monthly:0,
@@ -98,7 +98,7 @@ export const amenities_list = [
     {
         title:"In-building laundry",
         id:"laundry",
-        happiness:15,
+        happiness:7,
         cost_upfront:0,
         cost_upfront_per_building:8000,
         cost_monthly:0,
@@ -110,6 +110,22 @@ export const amenities_list = [
         revenue_monthly_random:true,
         revenue_monthly_min:0,
         notes:"Happier residents<br/>Upfront cost: $8000/building<br/>Monthly cost: $50 per building<br/>Coin-op profit"
+    },
+    {
+        title:"Fitness Center",
+        id:"fitness",
+        happiness:7,
+        cost_upfront:120000,
+        cost_upfront_per_building:0,
+        cost_monthly:0,
+        cost_monthly_per_resident:0, // if random is set, this is the max
+        cost_monthly_per_resident_random:false,
+        cost_monthly_per_resident_min:0,
+        cost_monthly_per_building:0,
+        revenue_monthly:0,
+        revenue_monthly_random:false,
+        revenue_monthly_min:0,
+        notes:""
     },
 ]
 
