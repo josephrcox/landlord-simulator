@@ -29,4 +29,19 @@ export function changePool(x) {
 export function hireRentalAssistant() {
     localStorage.rentalAssistants = parseInt(localStorage.rentalAssistants) + 1
     console.log(localStorage.rentalAssistants)
+    sync()
+}
+
+export function changeBuildings(x) {
+    let b = JSON.parse(localStorage.game).buildings
+    b.splice(b.length-1,1)
+    sync()
+}
+
+export function changeOwnership(x) {
+    console.log("ownership change "+x)
+    localStorage.ownership = parseFloat(localStorage.ownership) + parseFloat(x)
+    localStorage.thisMonthInvestmentTotal = x
+    localStorage.currentScenarioVariable = "0"
+    sync()
 }

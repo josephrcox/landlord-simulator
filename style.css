@@ -1,15 +1,14 @@
-
 @font-face {
     font-family: "lora";
     src: url("/font/Lora-VariableFont_wght.ttf");
-  }
-  
-  body {
+}
+
+body {
     font-family: 'Lora', serif;
-  }
-  
-  
-  .building {
+}
+
+
+.building {
     width: 270px;
     height: 295px;
     /*! border: 1px solid black; */
@@ -18,61 +17,66 @@
     flex-direction: column;
     padding-block: 10px;
     justify-content: space-evenly;
-/*         background-image: url("/Frame 14.svg"); */
-      background-size: cover;
+    /*         background-image: url("/Frame 14.svg"); */
+    background-size: cover;
     background-repeat: no-repeat;
     padding-top: 50px;
     flex-wrap: wrap;
-  }
-  
-  
-  .building_rent {
+}
+
+
+.building_rent {
     margin-inline: 15px;
     font-size: 22px;
-  }
-  
-  
-  .button.building_rentout {
+}
+
+
+.button.building_rentout {
     font-size: 32px;
-    background-color:yellow;
-  }
-  
-  .game {
+    background-color: yellow;
+}
+
+.game {
     display: flex;
     flex-direction: column;
     /*! height: 100%; */
-  }
-  
-  .game-top, .game-center, .game-bottom {
+}
+
+.game-top,
+.game-center,
+.game-bottom {
     /*! border: 1px solid black; */
-  }
-  
-  html, body {
-  height: 100%;
-  width: 100%;
-  overflow-x: clip;
-  margin: 0px;
-  }
-  
-  .game-center {
-  flex-grow: 5;
-  padding-left: 5px;
-  padding-right: 5px;
-  text-align: center;
-  margin-top: 7px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  }
-  
-  
-  .game-bottom, #modal_history_table, #scenario_history_table {
-  flex-grow: 1;
-  overflow: scroll;
-  }
-  
-  .button {
-    all:unset;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow-x: clip;
+    margin: 0px;
+}
+
+.game-center {
+    flex-grow: 5;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+    margin-top: 7px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+.game-bottom,
+#modal_history_table,
+#scenario_history_table {
+    flex-grow: 1;
+    overflow: scroll;
+}
+
+.button {
+    all: unset;
     background-color: white;
     color: black;
     font-size: 20px;
@@ -81,132 +85,139 @@
     padding: 10px;
     margin-top: 10px;
     text-align: center;
-  
+
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     cursor: pointer;
-    padding-inline:15px;
+    padding-inline: 15px;
     resize: none;
-  }
-  
-  .button>div {
+    margin-inline: 3px;
+}
+
+.button>div {
     margin-top: 3px;
     border-top: 1px solid gray;
     padding-top: 3px;
     font-size: 12px;
     display: flex;
     flex-wrap: wrap;
-    width: fit-content;
-  }
-  
-  #stats {
-  font-size: 17px;
-  display: flex;
-  flex-wrap: wrap;
-  }
-  
-  #stats>div {
-  flex: 1 1 60px;
-  min-width: fit-content;
-  padding:5px;
-  border:1px solid black;
+    justify-content: center;
+}
+
+#stats {
+    font-size: 17px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#stats>div {
+    flex: 1 1 60px;
+    min-width: fit-content;
+    padding: 5px;
+    border: 1px solid black;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-  
-  }
-  
-  [data-enabled="true"] {
+
+}
+
+[data-enabled="true"] {
     background-color: rgb(2, 2, 144);
     color: white;
-  }
-  
-  #name {
-    all:unset;
+}
+
+#name {
+    all: unset;
     font-variant: inherit;
     font-size: 36px;
     width: 100%;
     text-align: center;
     color: white;
     background-color: #442301;
-  
-  }
-  
-  #toggle-speed, #toggle-pause {
-    all:unset;
+
+}
+
+#toggle-speed,
+#toggle-pause {
+    all: unset;
     cursor: pointer;
-    width:90px;
-    padding-left:10px;
+    width: 90px;
+    padding-left: 10px;
     background-color: #646161;
-    color:white;
+    color: white;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-  }
-  
-  #toggle-pause {
+}
+
+#toggle-pause {
     background-color: white;
     width: fit-content;
     padding-right: 10px;
     border: 1px solid black;
-  }
-  
-  table, td, th {
+}
+
+table,
+td,
+th {
     border: 1px solid;
-  }
-  
-  table {
+}
+
+table {
     width: fit-content;
     border-collapse: collapse;
     margin-top: 15px;
-  }
-  
-  
-  
-  tbody {
-  overflow-x: scroll;
-  }
-  td {
-  padding-inline: 5px;
-  white-space: nowrap;
-  }
-  tr {
-  overflow-x: scroll;
-  }
-  
-  
-  #helpmodal, #scenariomodal {
-  display: none;
-  width: calc(100vw - 10vw);
-  height: calc(100vh - 10vh);
-  position: fixed;
-  background-color: #ddf666;
-  top: 5vh;
-  color: black;
-  border-radius: 30px;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 700px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  }
-  
-  #overlay {
-      display: block;
-      background-color: gray;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      position: fixed;
-  }
+}
+
+
+
+tbody {
+    overflow-x: scroll;
+}
+
+td {
+    padding-inline: 5px;
+    white-space: nowrap;
+}
+
+tr {
+    overflow-x: scroll;
+}
+
+
+#helpmodal,
+#scenariomodal {
+    display: none;
+    width: calc(100vw - 10vw);
+    height: calc(100vh - 10vh);
+    position: fixed;
+    background-color: #ddf666;
+    top: 5vh;
+    color: black;
+    border-radius: 30px;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 700px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+#overlay {
+    display: block;
+    background-color: gray;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: fixed;
+}
 
 
 .building_rentout:hover {
-  background-color: #c4c400;
+    background-color: #c4c400;
 }
