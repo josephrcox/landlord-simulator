@@ -221,3 +221,7 @@ tr {
 .building_rentout:hover {
     background-color: #c4c400;
 }
+
+#scenariomodal > #scenario_history_table {
+	width: 100%;
+}

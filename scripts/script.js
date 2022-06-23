@@ -237,7 +237,7 @@ function gameLoopAction() {
     localStorage.residentLeaveLoss = 0
     let z = Math.random() * 1000
 
-    if (z > 995 && (JSON.parse(localStorage.game).buildings.length > 1)) {
+    if (z > 950 && (JSON.parse(localStorage.game).buildings.length > 1)) {
         newScenario()
     }
 
@@ -261,6 +261,10 @@ function gameLoopAction() {
     if (parseInt(localStorage.cash) >= 1 && cripplingFor > 0) {
         cripplingForCash = false
         cripplingFor = 0
+    }
+
+    if (parseFloat(localStorage.ownership) <= 0) {
+        gameOver()
     }
     localStorage.thisMonthInvestmentTotal = "0"
 }

@@ -27,11 +27,14 @@ export function newScenario(override) {
     }
     pause()
     overlay.style.display = 'block'
-    modal.style.display = 'block' 
+    
     let elem = document.querySelector('.history_table')
     let clone = elem.cloneNode(true)
+    clone.style.display = 'block'
     document.getElementById('scenario_history_table').innerHTML = ""
     document.getElementById('scenario_history_table').append(clone)
+
+    modal.style.display = 'flex' 
 
     if (scenarios_list[x].skipWithSecurity == true && localStorage.amenities_security == "true") {
         modal.children[0].innerHTML = scenarios_list[x].securityAlert
@@ -39,22 +42,25 @@ export function newScenario(override) {
         modal.children[2].style.display = 'none'
         return
     }
+    modal.children[2].style.display = 'flex'
 
     if (scenarios_list[x].title.includes("~~")) {
+        let percentOfStock = (scenarios_list[x].a.match(/\d+/))/10 // 10% is 1, kind of like a multiplier, 1% is 0.1, 40% is 4
+        console.log(percentOfStock)
         if (localStorage.currentScenarioVariable == "null" || localStorage.currentScenarioVariable == null || localStorage.currentScenarioVariable == "0") {
             let titleSplit = scenarios_list[x].title.split("~~")
             if (localStorage.profiting == "true") {
-                Z = Math.floor(Math.random() * (parseInt(localStorage.cash) * 3))
+                Z = Math.floor(Math.random() * (parseInt(localStorage.cash) * percentOfStock * 2) ) 
             } else {
-                Z = Math.floor(Math.random() * (parseInt(localStorage.cash) / 3))
+                Z = Math.floor(Math.random() * ((parseInt(localStorage.cash)  * percentOfStock) / 5))
             }
             
             console.log("random number is "+Z)
-            modal.children[0].innerHTML = "<br/><br/>"+titleSplit[0]+"$"+Z
+            modal.children[0].innerHTML = "<br/><br/>"+titleSplit[0]+"$"+parseInt(Z).toLocaleString()
             localStorage.setItem('currentScenarioVariable', Z)
         } else {
             let titleSplit = scenarios_list[x].title.split("~~")
-            modal.children[0].innerHTML = "<br/><br/>"+titleSplit[0]+"$"+localStorage.currentScenarioVariable
+            modal.children[0].innerHTML = "<br/><br/>"+titleSplit[0]+"$"+parseInt(localStorage.currentScenarioVariable).toLocaleString()
         }
 
     } else {
@@ -92,6 +98,10 @@ function optionChosen(choice) {
                 case "cash":
                     if (y[1] == "VAR") {
                         changeCash(parseInt(localStorage.currentScenarioVariable))
+                    } else if (y[1].includes('RAN')) {
+                        let ran = Math.floor(Math.random() * (parseInt(y[1].split('RAN')[1])))
+                        console.log("ran is "+ran)
+                        changeCash(parseInt(ran))
                     } else {
                         changeCash(parseInt(y[1]))
                     }
@@ -118,8 +128,17 @@ function optionChosen(choice) {
                     changeBuildings(y[1])
                     break;
                 case "sell":
-                    changeOwnership(y[1])
+                    if (parseFloat(localStorage.ownership) + parseFloat(y[1]) <= 0) {
+                        alert('You can not own 0% or less of your company')
+                        return false
+                    } else {
+                        changeOwnership(y[1])
+                        break;
+                    }
+                case "alert2":
+                    alert(scenarios_list[x].alertMSG_2)
                     break;
+
             }
         }
     }
