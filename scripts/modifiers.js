@@ -1,4 +1,5 @@
 import { sync } from "./script.js"
+import { drawBuildings } from "./buildingManager.js"
 
 export function changeCash(x) {
     localStorage.cash = parseInt(localStorage.cash) + x
@@ -29,4 +30,21 @@ export function changePool(x) {
 export function hireRentalAssistant() {
     localStorage.rentalAssistants = parseInt(localStorage.rentalAssistants) + 1
     console.log(localStorage.rentalAssistants)
+    sync()
+}
+
+export function changeBuildings(x) {
+    let b = JSON.parse(localStorage.game)
+    b.buildings.splice(-1)
+    localStorage.game = JSON.stringify(b)
+    drawBuildings()
+    sync()
+}
+
+export function changeOwnership(x) {
+    console.log("ownership change "+x)
+    localStorage.ownership = (parseFloat(localStorage.ownership) + parseFloat(x)).toFixed(2);
+    localStorage.thisMonthInvestmentTotal = x
+    localStorage.currentScenarioVariable = "0"
+    sync()
 }

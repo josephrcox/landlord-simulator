@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Merriweather&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Merriweather&display=swap" rel="stylesheet">  -->
     <link rel="stylesheet" href="style.css">
     <title>renting game</title>
 </head>
@@ -37,7 +37,6 @@
                 </button>
                 <div id="stats-month">Month: <div id="stats-month-value">0</div></div>
                 <div id="stats-cash">Cash: <div id="stats-cash-value"></div></div>
-                <div id="stats-rent">Rent: <div id="stats-rent-value"></div></div>
                 <div id="stats-appts">Total buildings: <div id="stats-appts-value"></div></div>
                 <div id="stats-available">Available appts: <div id="stats-available-value"></div></div>
                 <div id="stats-residents">Residents: <div id="stats-residents-value"></div></div>
@@ -47,57 +46,15 @@
         </div>
 
         <div class="game-center">
-                <button class="button" id="appts-buy">
-                    Buy building
-                    <div>
-                        More apartments <br> Cost $600,000
-                    </div>
-                </button>
-                <button class="button" id="appts-rent">
-                    Rent out
-                    <div>
-                        Higher chance with better rating/lower rent
-                    </div>
-                </button>
-                <button class="button" id="rent-inc">
-                    Rent +
-                </button>
-                <button class="button" id="rent-dec">
-                    Rent -
-                </button>
-
-                <div>
-                    <h2>Amenities</h2>
-                    <button class="button" id="toggle-pool" data-enabled="false">
-                        Pool
-                        <div>
-                            Happiness + <br> Cost $2,000/m + $10/resident/m ($50,000 upfront)
-                        </div>
-                    </button>
-                    <button class="button" id="toggle-freeutilities" data-enabled="false">
-                        Free utilities
-                        <div>
-                            Happiness + <br> Cost $100-$200/resident/m (varies)
-                        </div>
-                    </button>
-                    <button class="button" id="toggle-dogs" data-enabled="false">
-                        Dogs allowed
-                        <div>
-                            Happiness + <br> Pet rent profit (varies) <br>Cost $100/building/m,
-                        </div>
-                    </button>
-                    <button class="button" id="toggle-cats" data-enabled="false">
-                        Cats allowed
-                        <div>
-                            Happiness + <br> Pet rent profit (varies) <br>Cost $50/building/m,
-                        </div>
-                    </button>
-                </div>
-
 
         </div>
+        <div id="amenities_container">
+            <h2>Amenities</h2>
+        </div>
+        </div>
+        
         <div class="game-bottom" >
-            <!-- <div id="logs"></div> -->
+            
         </div>
     </div>
 
