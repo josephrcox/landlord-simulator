@@ -16,7 +16,7 @@ export const bldg = {
         const a = document.createElement('div')
         a.classList.add('building')
         a.dataset.index = this.index
-        a.style.backgroundImage = 'url(/buildings/'+this.color+'.svg)'
+        a.style.backgroundImage = 'url(./buildings/'+this.color+'.svg)'
         console.log(a.style.backgroundImage)
     
         const head = document.createElement('div')
