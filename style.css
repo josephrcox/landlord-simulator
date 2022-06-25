@@ -39,7 +39,8 @@ body {
 .game {
     display: flex;
     flex-direction: column;
-    /*! height: 100%; */
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .game-top,
@@ -63,7 +64,7 @@ body {
     text-align: center;
     margin-top: 7px;
     display: flex;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 
@@ -71,7 +72,7 @@ body {
 #modal_history_table,
 #scenario_history_table {
     flex-grow: 1;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .button {
@@ -116,7 +117,7 @@ body {
     flex: 1 1 60px;
     min-width: fit-content;
     padding: 5px;
-    border: 1px solid black;
+    /*! border: 1px solid black; */
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -158,7 +159,7 @@ body {
     background-color: white;
     width: fit-content;
     padding-right: 10px;
-    border: 1px solid black;
+    /*! border: 1px solid black; */
 }
 
 table,
@@ -176,7 +177,7 @@ table {
 
 
 tbody {
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 td {
@@ -185,7 +186,7 @@ td {
 }
 
 tr {
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 
@@ -228,6 +229,6 @@ tr {
 
 
 #amenities_container {
-    overflow-x: scroll;
+    overflow-x: auto;
     display: flex;
   }
