@@ -8,7 +8,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An entrepreneur approaches you with a deal. They want to start selling knives door to door, bypassing normal security procedures.",
@@ -19,7 +20,8 @@ export const scenarios_list = [
         alertMSG:"Two residents are unfortunately stabbed in their apartments. The cops have no leads, but you must now pay $50,000 for the cleanup",
         requiresPool:false,
         skipWithSecurity:true,
-        securityAlert:"Security was able to deter a sketchy man with knvies"
+        securityAlert:"Security was able to deter a sketchy man with knvies",
+        oneoff:false,
     },
     {
         title:"The complex pool has been overtaken by wild squirrels.",
@@ -30,29 +32,32 @@ export const scenarios_list = [
         alertMSG:"The squirrels have been defeated, but 3 residents did not like your request and have found new homes elsewhere",
         requiresPool:true,
         skipWithSecurity:true,
-        securityAlert:"Security was able to deter a faction of wild squirrels"
+        securityAlert:"Security was able to deter a faction of wild squirrels",
+        oneoff:false,
     },
     {
         title:"You get an email from someone claiming that they can make your residents a bit happier for the small price of $7k/month + $12/resident/month. Their resume looks legit and they have good references.",
         a:"Hire them",
         b:"Not a good fit",
-        a_outcome:"rentalAssistant,1&salary,-7000&rating,20",
+        a_outcome:"rentalAssistant,1&salary,7000&rating,20",
         b_outcome:"",
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"You get an email from someone claiming that they can make your residents a bit happier for the small price of $15k/month + $10/resident/month. Their resume looks legit and they have glowing references.",
         a:"Hire them",
         b:"Not a good fit",
-        a_outcome:"rentalAssistant,1&salary,-15000&rating,25",
+        a_outcome:"rentalAssistant,1&salary,15000&rating,25",
         b_outcome:"",
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"One of your apartment buildings has burned down. Luckily, nobody was hurt, but there are residents that no longer have housing. ",
@@ -63,7 +68,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 10% of your company for ~~1000000",
@@ -74,7 +80,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 12% of your company for ~~1000000",
@@ -85,7 +92,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 20% of your company for ~~1000000",
@@ -96,7 +104,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 5% of your company for ~~1000000",
@@ -107,7 +116,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 1% of your company for ~~1000000",
@@ -118,7 +128,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 3% of your company for ~~1000000",
@@ -129,7 +140,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 49% of your company for ~~1000000",
@@ -140,7 +152,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 99% of your company for ~~1000000",
@@ -151,7 +164,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         title:"An investor offers to buy 40% of your company for ~~1000000",
@@ -162,7 +176,8 @@ export const scenarios_list = [
         alertMSG:"",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         // lottery, break in is successful but lowers rating
@@ -175,7 +190,8 @@ export const scenarios_list = [
         alertMSG_2:"The resident was very thankful for your fruit basket",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
     },
     {
         // lottery, break in is unsuccessful and lowers rating
@@ -188,7 +204,50 @@ export const scenarios_list = [
         alertMSG_2:"The resident was very thankful for your fruit basket",
         requiresPool:false,
         skipWithSecurity:false,
-        securityAlert:""
+        securityAlert:"",
+        oneoff:false,
+    },
+    {
+        // description
+        title:"A resident refuses to stop mowing the lawn outside of their building. It is quite nice, but you feel kind of bad. ",
+        a:"Offer them a job for $500/month to keep up their good work",
+        b:"Look the other way",
+        a_outcome:"salary,500&rating,5",
+        b_outcome:"",
+        alertMSG:"",
+        alertMSG_2:"",
+        requiresPool:false,
+        skipWithSecurity:false,
+        securityAlert:"",
+        oneoff:false,
+    },
+    {
+        // description
+        title:'A resident approaches you with an idea, "2 words. Dodgeball Competition"',
+        a:"Sure",
+        b:"Um..No?",
+        a_outcome:"rating,15",
+        b_outcome:"",
+        alertMSG:"The official resident dodgeball competition was fun and exciting! Morale is high, and people can't see what other activities come next!",
+        alertMSG_2:"",
+        requiresPool:false,
+        skipWithSecurity:false,
+        securityAlert:"",
+        oneoff:true,
+    },
+    {
+        // description
+        title:" ",
+        a:"",
+        b:"",
+        a_outcome:"",
+        b_outcome:"",
+        alertMSG:"",
+        alertMSG_2:"",
+        requiresPool:false,
+        skipWithSecurity:false,
+        securityAlert:"",
+        oneoff:false
     },
 ]
 
@@ -197,12 +256,14 @@ export const scenarios_list = [
 /* 
 
 {
-    title:" ",
+    // description
+    title:"",
     a:"",
     b:"",
     a_outcome:"",
     b_outcome:"",
     alertMSG:"",
+    alertMSG_2:"",
     requiresPool:false,
     skipWithSecurity:false,
     securityAlert:""

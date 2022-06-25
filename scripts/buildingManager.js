@@ -16,7 +16,12 @@ export const bldg = {
         const a = document.createElement('div')
         a.classList.add('building')
         a.dataset.index = this.index
-        a.style.backgroundImage = 'url(./buildings/'+this.color+'.svg)'
+        if (this.color.length > 1) {
+            a.style.backgroundImage = 'url(./buildings/'+this.color+'.svg)'
+        } else {
+            a.style.backgroundImage = 'url(./buildings/gray.svg)'
+        }
+
         console.log(a.style.backgroundImage)
     
         const head = document.createElement('div')
@@ -100,7 +105,7 @@ export function drawBuildings() {
             const a = document.createElement('div')
             a.classList.add('building')
             a.style.filter = 'grayscale()'
-        
+            a.style.backgroundImage = 'url(./buildings/gray.svg)'
             const head = document.createElement('div')
             head.classList.add('building_head')
             buyNewBuilding = document.createElement('button')

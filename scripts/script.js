@@ -24,10 +24,10 @@ const percentOfRentAsProfit = 0.2
 let gameSpeed = 5000
 let normalGameSpeed = 5000
 let fastGameSpeed = 1000
-
-const salary_RA = 7000
  
 let renters = []
+
+let scenarioFrequency = 950 // out of 1000, how many ticks will trigger a new scenario (when >1 buildings)
 
 const defaultGameSchema = {
         "buildings":[
@@ -58,7 +58,7 @@ const toggleCats = document.getElementById('toggle-cats')
 window.onload = function() {
     table_init()
     // showAmenities()
-    if (localStorage.game == null || localStorage.thisMonthInvestmentTotal == null || localStorage.ownership == null || localStorage.month == null || isNaN(localStorage.month) || localStorage.residentLeaveLoss == null || localStorage.cash == null || localStorage.currentScenario == null || isNaN(localStorage.cash)) {
+    if (localStorage.game == null || localStorage.salaries == null || localStorage.thisMonthInvestmentTotal == null || localStorage.ownership == null || localStorage.month == null || isNaN(localStorage.month) || localStorage.residentLeaveLoss == null || localStorage.cash == null || localStorage.currentScenario == null || isNaN(localStorage.cash)) {
         localStorage.setItem('month', 1)
         localStorage.setItem('rent', 0)
 
@@ -74,9 +74,12 @@ window.onload = function() {
         }
         localStorage.currentScenario = -1
         localStorage.rentalAssistants = 0
+        localStorage.salaries = 0
         localStorage.residentLeaveLoss = 0
         localStorage.ownership = 1.0
         localStorage.thisMonthInvestmentTotal = "0"
+        localStorage.history = ""
+        localStorage.oneoffArray = ""
     } 
     stats_month_value.innerText = localStorage.getItem('day')
     stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
@@ -230,14 +233,14 @@ function gameLoopAction() {
 
     let amenitiesProfit = -1 * costOfExtras
     let propertyTaxes = (Math.round((1200 * JSON.parse(localStorage.game).buildings.length * (JSON.parse(localStorage.game).buildings.length * 2.3) + 1))*-1)
-    let staffSalaries = (parseInt(localStorage.rentalAssistants) * (salary_RA + (totalResidents * 12)))
+    
+    let staffSalaries = (parseInt(localStorage.rentalAssistants) * ((totalResidents * 12))) + parseInt(localStorage.salaries)
     syncTable(totalResidents, revenueRent, rentProfit, amenitiesProfit, propertyTaxes, parseInt(localStorage.residentLeaveLoss), staffSalaries)
 
-    sync()
     localStorage.residentLeaveLoss = 0
     let z = Math.random() * 1000
 
-    if (z > 950 && (JSON.parse(localStorage.game).buildings.length > 1)) {
+    if (z > scenarioFrequency && (JSON.parse(localStorage.game).buildings.length > 1)) {
         newScenario()
     }
 
@@ -267,6 +270,12 @@ function gameLoopAction() {
         gameOver()
     }
     localStorage.thisMonthInvestmentTotal = "0"
+
+    let randomRatingChange = ((Math.round(Math.random()) * 2 - 1) * Math.ceil(Math.random() * (1.5 * parseInt(JSON.parse(localStorage.game).buildings.length))))
+    console.log(localStorage.rating, randomRatingChange)
+    localStorage.rating = round(parseFloat(localStorage.rating) + randomRatingChange, 2)
+    sync()
+
 }
 
 function round(value, decimals) {

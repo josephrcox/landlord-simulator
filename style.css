@@ -9,7 +9,7 @@ body {
 
 
 .building {
-    width: 270px;
+    /*! width: 270px; */
     height: 295px;
     /*! border: 1px solid black; */
     margin-right: 10px;
@@ -17,11 +17,11 @@ body {
     flex-direction: column;
     padding-block: 10px;
     justify-content: space-evenly;
-    /*         background-image: url("/Frame 14.svg"); */
     background-size: cover;
     background-repeat: no-repeat;
     padding-top: 50px;
     flex-wrap: wrap;
+    min-width: 270px;
 }
 
 
@@ -63,8 +63,7 @@ body {
     text-align: center;
     margin-top: 7px;
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    overflow-x: scroll;
 }
 
 
@@ -94,6 +93,7 @@ body {
     padding-inline: 15px;
     resize: none;
     margin-inline: 3px;
+    min-width: max-content;
 }
 
 .button>div {
@@ -225,3 +225,9 @@ tr {
 #scenariomodal > #scenario_history_table {
 	width: 100%;
 }
+
+
+#amenities_container {
+    overflow-x: scroll;
+    display: flex;
+  }

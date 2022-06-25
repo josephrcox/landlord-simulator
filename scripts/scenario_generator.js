@@ -1,6 +1,6 @@
 import { scenarios_list } from "./JSON_scenarios.js";
 import { pause } from "./script.js";
-import { changeCash, changeRating, changeResidents, changePool, hireRentalAssistant, changeBuildings, changeOwnership } from "./modifiers.js";
+import { changeCash, changeRating, changeResidents, changePool, hireRentalAssistant, changeBuildings, changeOwnership, changeSalary } from "./modifiers.js";
 
 const modal = document.getElementById('scenariomodal')
 const overlay = document.getElementById('overlay')
@@ -18,6 +18,11 @@ export function newScenario(override) {
     let x = Math.floor(Math.random() * scenarios_list.length)
     if (override) {
         x = override;
+    }
+    if (JSON.parse(localStorage.oneoffArray).indexOf(x) != -1 && scenarios_list[x].oneoff == true) {
+        console.log("cant reuse "+scenarios_list[x].title)
+        newScenario()
+        return;
     }
     localStorage.currentScenario = x
     if (scenarios_list[x].requiresPool == true && localStorage.amenities_pool == "false") {
@@ -76,7 +81,9 @@ export function newScenario(override) {
         modal.children[2].style.display = 'none'
     }
 
-
+    let ooa = JSON.parse(localStorage.oneoffArray)
+    ooa.push(x)
+    localStorage.oneoffArray = JSON.stringify(ooa)
 
 }
 
@@ -138,7 +145,9 @@ function optionChosen(choice) {
                 case "alert2":
                     alert(scenarios_list[x].alertMSG_2)
                     break;
-
+                case "salary":
+                    changeSalary(y[1])
+                    break;
             }
         }
     }

@@ -33,6 +33,11 @@ export function hireRentalAssistant() {
     sync()
 }
 
+export function changeSalary(x) {
+    localStorage.salaries = parseINt(localStorage.salaries) + x
+    console.log(localStorage.salaries)
+}
+
 export function changeBuildings(x) {
     let b = JSON.parse(localStorage.game)
     b.buildings.splice(-1)
