@@ -231,7 +231,12 @@ export function residentLeave(override) {
             leaving = 0
         }
         AllBuildings[bldg].residents -= leaving
-        localStorage.residentLeaveLoss = parseInt(localStorage.residentLeaveLoss) - (AllBuildings[bldg].rent * 3 * leaving)
+        if (localStorage.amenities_quickturnover == "true") {
+            localStorage.residentLeaveLoss = parseInt(localStorage.residentLeaveLoss) - ((AllBuildings[bldg].rent / 5) * leaving)
+        } else {
+            localStorage.residentLeaveLoss = parseInt(localStorage.residentLeaveLoss) - (AllBuildings[bldg].rent * 3 * leaving)
+        }
+        
         changeCash(-1 * (AllBuildings[bldg].rent * 1 * leaving))
         changeRating(leaving * resleave_rating)
         syncBuildingData(AllBuildings[bldg])

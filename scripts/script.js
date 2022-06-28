@@ -10,7 +10,6 @@ const stats_month_value = document.getElementById('stats-month-value')
 const stats_cash_value = document.getElementById('stats-cash-value')
 const stats_appts_value = document.getElementById('stats-appts-value')
 const stats_available_value = document.getElementById('stats-available-value')
-const stats_residents_value = document.getElementById('stats-residents-value')
 const stats_rating_value = document.getElementById('stats-rating-value')
 
 let rating = 0
@@ -85,7 +84,6 @@ window.onload = function() {
     stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
     stats_appts_value.innerText = localStorage.getItem('appts')
     stats_available_value.innerText = localStorage.getItem('available')
-    stats_residents_value.innerText = localStorage.getItem('residents')
 
     if (localStorage.gameover == "true") {
         gameOver()
@@ -94,6 +92,9 @@ window.onload = function() {
         if (parseInt(localStorage.currentScenario) >= 0) {
             newScenario(parseInt(localStorage.currentScenario))
         }
+    }
+    if (localStorage.darkmode == null) {
+        localStorage.darkmode == "false"
     }
     drawBuildings()
     sync()
@@ -105,16 +106,16 @@ let cripplingFor = 0
 export function sync() {
     localStorage.rating = round(parseFloat(localStorage.rating), 3)
     if (parseFloat(localStorage.rating) >= 100) {
-        stats_rating_value.innerHTML = '😍 <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '😍 <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 3
     } else if (parseFloat(localStorage.rating) >= 75) {
-        stats_rating_value.innerHTML = '🙂 <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '🙂 <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 2
     } else if (parseFloat(localStorage.rating) >= 25) {
-        stats_rating_value.innerHTML = '😐 <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '😐 <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 1
     } else if (parseFloat(localStorage.rating) >= 0) {
-        stats_rating_value.innerHTML = '☹️ <span style="font-size:10px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '☹️ <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
         rating = 0
     }
 
@@ -131,7 +132,6 @@ export function sync() {
         totalResidents +=  JSON.parse(localStorage.game).buildings[i].residents
     }
     stats_available_value.innerText = totalAvailable
-    stats_residents_value.innerTexFt = totalResidents
     stats_month_value.innerText = localStorage.month
 
     if (parseInt(localStorage.cash) >= 600000) {
@@ -155,11 +155,20 @@ export function pause() {
     if (paused) {
         paused = false
         document.getElementById('pause').innerText = '⏸️'
-        document.getElementById('toggle-pause').style.backgroundColor = 'white'
+        if (localStorage.darkmode == "true") {
+            document.getElementById('toggle-pause').style.backgroundColor = 'black'
+        } else {
+            document.getElementById('toggle-pause').style.backgroundColor = 'white'
+        }
+        
     } else if (!paused) {
         paused = true
         document.getElementById('pause').innerText = '▶️'
-        document.getElementById('toggle-pause').style.backgroundColor = 'black'
+        if (localStorage.darkmode == "true") {
+            document.getElementById('toggle-pause').style.backgroundColor = 'white'
+        } else {
+            document.getElementById('toggle-pause').style.backgroundColor = 'black'
+        }
     }
 }
 

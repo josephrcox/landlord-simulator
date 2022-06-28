@@ -5,8 +5,9 @@
 
 body {
     font-family: 'Lora', serif;
+    color: black;
+    background-color: white;
 }
-
 
 .building {
     /*! width: 270px; */
@@ -75,6 +76,13 @@ body {
     overflow: auto;
 }
 
+.game-bottom,
+#modal_history_table,
+#scenario_history_table {
+    flex-grow: 1;
+    overflow: auto;
+}
+
 .button {
     all: unset;
     background-color: white;
@@ -111,6 +119,7 @@ body {
     font-size: 17px;
     display: flex;
     flex-wrap: wrap;
+    padding-bottom: 5px;
 }
 
 #stats>div {
@@ -232,3 +241,8 @@ tr {
     overflow-x: auto;
     display: flex;
   }
+
+.darkmode {
+    color: white;
+    background-color: black;
+}

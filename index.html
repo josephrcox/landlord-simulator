@@ -39,8 +39,9 @@
                 <div id="stats-cash">Cash: <div id="stats-cash-value"></div></div>
                 <div id="stats-appts">Total buildings: <div id="stats-appts-value"></div></div>
                 <div id="stats-available">Available appts: <div id="stats-available-value"></div></div>
-                <div id="stats-residents">Residents: <div id="stats-residents-value"></div></div>
                 <div id="stats-rating">Rating: <div id="stats-rating-value"></div></div>
+                <button onclick="restart()" class="button">Restart</button>
+                <button onclick="toggleDarkMode()" class="button">Display mode</button>
             </div>
             <input type="text" id="name" placeholder="Your company name" autocomplete="off">
         </div>
@@ -48,7 +49,7 @@
         <div class="game-center">
 
         </div>
-        <h2>Amenities</h2>
+        <h2>Upgrades / Modifications / Amenities</h2>
         <div id="amenities_container">
 
         </div>
@@ -60,5 +61,37 @@
     </div>
 
     <script src="./scripts/script.js" type="module"></script>
+    <script>
+
+        if (localStorage.darkmode == "false" || localStorage.darkmode == null) {
+            localStorage.darkmode = "false"
+            document.body.classList.remove('darkmode')
+            document.getElementsByClassName('game')[0].style.backgroundColor = 'white'
+            document.getElementById('toggle-pause').style.backgroundColor = 'white'
+        } else {
+            localStorage.darkmode = "true"
+            document.body.classList.add('darkmode')
+            document.getElementsByClassName('game')[0].style.backgroundColor = 'black'
+            document.getElementById('toggle-pause').style.backgroundColor = 'black'
+        }
+
+        function toggleDarkMode() {
+            if (localStorage.darkmode == "false" || localStorage.darkmode == null) {
+                localStorage.darkmode = "true"
+                document.body.classList.add('darkmode')
+                document.getElementsByClassName('game')[0].style.backgroundColor = 'black'
+                document.getElementById('toggle-pause').style.backgroundColor = 'black'
+            } else {
+                localStorage.darkmode = "false"
+                document.body.classList.remove('darkmode')
+                document.getElementsByClassName('game')[0].style.backgroundColor = 'white'
+                document.getElementById('toggle-pause').style.backgroundColor = 'white'
+            }
+        }
+        function restart() {
+            localStorage.clear()
+            window.location.reload()
+        }
+    </script>
 </body>
 </html>
