@@ -29,21 +29,22 @@
     <div class="game">
         <div class="game-top">
             <div id="stats">
+                <input type="text" id="name" placeholder="Your company name" autocomplete="off" style="font-size: 24px;">
                 <button id="toggle-speed" data-enabled="false">
                     <span id="speed">Normal speed</span>
                 </button>
                 <button id="toggle-pause" data-enabled="false">
                     <span id="pause">⏸️</span>
                 </button>
-                <div id="stats-month">Month: <div id="stats-month-value">0</div></div>
-                <div id="stats-cash">Cash: <div id="stats-cash-value"></div></div>
-                <div id="stats-appts">Total buildings: <div id="stats-appts-value"></div></div>
-                <div id="stats-available">Available appts: <div id="stats-available-value"></div></div>
-                <div id="stats-rating">Rating: <div id="stats-rating-value"></div></div>
-                <button onclick="restart()" class="button">Restart</button>
-                <button onclick="toggleDarkMode()" class="button">Display mode</button>
+                <div>
+                    <button id="restartGameButton" onclick="restart()" class="button">Restart</button>
+                    <button onclick="toggleDarkMode()" class="button">Display mode</button>
+                </div>
+                <div id="stats-cash-value"></div>
+                <div id="stats-rating-value"></div>
+                
             </div>
-            <input type="text" id="name" placeholder="Your company name" autocomplete="off" style="font-size: 24px;">
+            
         </div>
         <h2>Buildings</h2>
         <div class="game-center">
@@ -62,7 +63,7 @@
 
     <script src="./scripts/script.js" type="module"></script>
     <script>
-
+        localStorage.removeItem('restart')
         if (localStorage.darkmode == "false" || localStorage.darkmode == null) {
             localStorage.darkmode = "false"
             document.body.classList.remove('darkmode')
@@ -89,8 +90,19 @@
             }
         }
         function restart() {
-            localStorage.clear()
-            window.location.reload()
+            if (localStorage.restart == null) {
+                localStorage.restart = "pending"
+                document.getElementById('restartGameButton').innerHTML = "Are you sure?"
+                setTimeout(function() {
+                    document.getElementById('restartGameButton').innerHTML = "Restart"
+                    localStorage.removeItem('restart')
+                }, 3000)
+                
+            } else {
+                localStorage.clear()
+                window.location.reload()
+            }
+
         }
     </script>
 </body>

@@ -116,14 +116,14 @@ body {
 }
 
 #stats {
-    font-size: 17px;
+    font-size: 34px;
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 5px;
+    align-items: center;
 }
 
 #stats>div {
-    flex: 1 1 60px;
     min-width: fit-content;
     padding: 5px;
     /*! border: 1px solid black; */
@@ -132,6 +132,7 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
 
+    display: flex;
 }
 
 [data-enabled="true"] {
@@ -142,12 +143,13 @@ body {
 #name {
     all: unset;
     font-variant: inherit;
-    font-size: 36px;
-    width: 100%;
     text-align: center;
-    color: white;
-    background-color: #442301;
+    color: black;
 
+    border: 1px solid black;
+    margin-block: 6px;
+    margin-inline: 10px;
+    width: auto;
 }
 
 #toggle-speed,
@@ -155,13 +157,20 @@ body {
     all: unset;
     cursor: pointer;
     width: 90px;
-    padding-left: 10px;
     background-color: #646161;
     color: white;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    margin-top: 5px;
+    border-radius: 30px;
+    font-size: 19px;
+    text-align: center;
+    margin-right: 5px;
+    padding-block: 5px;
+    padding-block: 15px;
+    padding-inline: 16px;
 }
 
 #toggle-pause {
@@ -169,6 +178,7 @@ body {
     width: fit-content;
     padding-right: 10px;
     /*! border: 1px solid black; */
+    padding-left: 10px;
 }
 
 table,
@@ -245,4 +255,11 @@ tr {
 .darkmode {
     color: white;
     background-color: black;
+}
+
+@media only screen and (max-width: 600px) {
+    #stats {
+        justify-content: center;
+        margin-block: 5px;
+    }
 }

@@ -6,10 +6,7 @@ import { drawBuildings, residentLeave, buyNewBuilding, getRandomColor } from "./
 import { showAmenities } from "./amenities.js"
 import { amenities_list } from "./JSON_amenities.js"
 
-const stats_month_value = document.getElementById('stats-month-value')
 const stats_cash_value = document.getElementById('stats-cash-value')
-const stats_appts_value = document.getElementById('stats-appts-value')
-const stats_available_value = document.getElementById('stats-available-value')
 const stats_rating_value = document.getElementById('stats-rating-value')
 
 let rating = 0
@@ -80,10 +77,7 @@ window.onload = function() {
         localStorage.history = ""
         localStorage.oneoffArray = ""
     } 
-    stats_month_value.innerText = localStorage.getItem('day')
     stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
-    stats_appts_value.innerText = localStorage.getItem('appts')
-    stats_available_value.innerText = localStorage.getItem('available')
 
     if (localStorage.gameover == "true") {
         gameOver()
@@ -106,16 +100,16 @@ let cripplingFor = 0
 export function sync() {
     localStorage.rating = round(parseFloat(localStorage.rating), 3)
     if (parseFloat(localStorage.rating) >= 100) {
-        stats_rating_value.innerHTML = '😍 <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '😍 ' + parseFloat(localStorage.rating)
         rating = 3
     } else if (parseFloat(localStorage.rating) >= 75) {
-        stats_rating_value.innerHTML = '🙂 <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '🙂 ' + parseFloat(localStorage.rating)
         rating = 2
     } else if (parseFloat(localStorage.rating) >= 25) {
-        stats_rating_value.innerHTML = '😐 <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '😐 ' + parseFloat(localStorage.rating)
         rating = 1
     } else if (parseFloat(localStorage.rating) >= 0) {
-        stats_rating_value.innerHTML = '☹️ <span style="font-size:16px">'+parseFloat(localStorage.rating)+'</span>'
+        stats_rating_value.innerHTML = '☹️ ' + parseFloat(localStorage.rating)
         rating = 0
     }
 
@@ -124,15 +118,12 @@ export function sync() {
     }
 
     stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
-    stats_appts_value.innerText = JSON.parse(localStorage.game).buildings.length
     let totalAvailable = 0
     let totalResidents = 0
     for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++) {
         totalAvailable += (40 - JSON.parse(localStorage.game).buildings[i].residents)
         totalResidents +=  JSON.parse(localStorage.game).buildings[i].residents
     }
-    stats_available_value.innerText = totalAvailable
-    stats_month_value.innerText = localStorage.month
 
     if (parseInt(localStorage.cash) >= 600000) {
         buyNewBuilding.style.backgroundColor = 'yellow'

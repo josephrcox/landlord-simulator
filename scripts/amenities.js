@@ -4,6 +4,7 @@ import { sync } from "./script.js"
 
 
 export function showAmenities() {
+    document.getElementById('amenities_container').innerHTML = ""
     let a = amenities_list
     for (let i=0;i<a.length;i++) {
         const button = document.createElement('button')
@@ -39,6 +40,7 @@ export function showAmenities() {
                 localStorage.setItem('amenities_'+a[i].id, true) 
                 changeRating(a[i].happiness )
             }
+            showAmenities()
             sync()
         }
 
@@ -48,6 +50,11 @@ export function showAmenities() {
 
         button.append(div)
 
-        document.getElementById('amenities_container').append(button)
+        if (button.dataset.enabled == "true") {
+            document.getElementById('amenities_container').insertBefore(button, document.getElementById('amenities_container').firstChild)
+        } else {
+            document.getElementById('amenities_container').append(button)
+        }
+        
     }
 }
