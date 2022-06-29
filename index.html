@@ -30,19 +30,22 @@
         <div class="game-top">
             <div id="stats">
                 <div>
-                    <input type="text" id="name" placeholder="Your company name" autocomplete="off" style="font-size: 24px;">
+                    <input type="text" id="name" placeholder="Your company name" autocomplete="off">
                 </div>
-                
-                <button id="toggle-speed" data-enabled="false">
-                    <span id="speed">Normal speed</span>
-                </button>
-                <button id="toggle-pause" data-enabled="false">
-                    <span id="pause">⏸️</span>
-                </button>
-                <div>
+                <div class="mobile-100width">
+                    <button id="toggle-speed" data-enabled="false" class="button">
+                        <span id="speed">🚶</span>
+                    </button>
+                    <button id="toggle-pause" data-enabled="false" class="button">
+                        <span id="pause">⏸️</span>
+                    </button>
                     <button id="restartGameButton" onclick="restart()" class="button">Restart</button>
-                    <button onclick="toggleDarkMode()" class="button">Display mode</button>
+                    <button onclick="toggleDarkMode()" class="button" id="toggleDarkMode"></button>
                 </div>
+
+                <!-- <div class="mobile-100width">
+
+                </div> -->
                 <div>
                     <div id="stats-cash-value"></div>
                     <div id="stats-profit-value"></div>
@@ -70,19 +73,27 @@
 
     <script src="./scripts/script.js" type="module"></script>
     <script>
+        let mode = document.getElementById('toggleDarkMode')
+
         localStorage.removeItem('restart')
         if (localStorage.darkmode == "false" || localStorage.darkmode == null) {
             localStorage.darkmode = "false"
             document.body.classList.remove('darkmode')
             document.getElementsByClassName('game')[0].style.backgroundColor = 'white'
             document.getElementById('toggle-pause').style.backgroundColor = 'white'
+            document.getElementById('toggle-speed').style.backgroundColor = 'white'
             document.getElementById('name').style.color = 'black'
+            mode.style.backgroundColor = 'white'
+            mode.innerHTML = "☀️"
         } else {
             localStorage.darkmode = "true"
             document.body.classList.add('darkmode')
             document.getElementsByClassName('game')[0].style.backgroundColor = 'black'
             document.getElementById('toggle-pause').style.backgroundColor = 'black'
+            document.getElementById('toggle-speed').style.backgroundColor = 'black'
             document.getElementById('name').style.color = 'white'
+            mode.style.backgroundColor = 'black'
+            mode.innerHTML = "🌙"
         }
 
         function toggleDarkMode() {
@@ -91,13 +102,20 @@
                 document.body.classList.add('darkmode')
                 document.getElementsByClassName('game')[0].style.backgroundColor = 'black'
                 document.getElementById('toggle-pause').style.backgroundColor = 'black'
+                document.getElementById('toggle-speed').style.backgroundColor = 'black'
                 document.getElementById('name').style.color = 'white'
+                mode.style.backgroundColor = 'black'
+                mode.innerHTML = "🌙"
             } else {
                 localStorage.darkmode = "false"
                 document.body.classList.remove('darkmode')
                 document.getElementsByClassName('game')[0].style.backgroundColor = 'white'
                 document.getElementById('toggle-pause').style.backgroundColor = 'white'
+                document.getElementById('toggle-speed').style.backgroundColor = 'white'
                 document.getElementById('name').style.color = 'black'
+                
+                mode.style.backgroundColor = 'white'
+                mode.innerHTML = "☀️"
             }
         }
         function restart() {

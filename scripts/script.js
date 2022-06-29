@@ -181,8 +181,7 @@ document.getElementById('toggle-speed').addEventListener('click', function() {
                 gameLoopAction()
             }
         }, gameSpeed)
-        document.getElementById('speed').innerText = 'Fast speed'
-        document.getElementById('toggle-speed').style.backgroundColor = 'darkred'
+        document.getElementById('speed').innerText = '🏃'
         document.getElementById('toggle-speed').style.fontWeight = '500'
     } else {
         gameSpeed = normalGameSpeed
@@ -192,8 +191,7 @@ document.getElementById('toggle-speed').addEventListener('click', function() {
                 gameLoopAction()
             }
         }, gameSpeed)
-        document.getElementById('speed').innerText = 'Normal speed'
-        document.getElementById('toggle-speed').style.backgroundColor = '#646161'
+        document.getElementById('speed').innerText = '🚶'
         document.getElementById('toggle-speed').style.fontWeight = '300'
     }
 })
