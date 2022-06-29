@@ -116,8 +116,15 @@ export function sync() {
     for (let i=0;i<amenities_list.length;i++) {
         document.getElementById('toggle-'+amenities_list[i].id).dataset.enabled = localStorage.getItem('amenities_'+amenities_list[i].id)
     }
+    if (stats_cash_value.innerHTML.includes('<')) {
+        console.log("includes")
+        let newcashtext = "$"+parseInt(localStorage.cash).toLocaleString() + stats_cash_value.innerHTML.split('<')[1] 
+        stats_cash_value.innerHTML = newcashtext
+    } else {
+        stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
+    }
 
-    stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
+
     let totalAvailable = 0
     let totalResidents = 0
     for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++) {
@@ -235,8 +242,6 @@ function gameLoopAction() {
     let propertyTaxes = (Math.round((1200 * JSON.parse(localStorage.game).buildings.length * (JSON.parse(localStorage.game).buildings.length * 2.3) + 1))*-1)
     
     let staffSalaries = (parseInt(localStorage.rentalAssistants) * ((totalResidents * 12))) + parseInt(localStorage.salaries)
-    syncTable(totalResidents, revenueRent, rentProfit, amenitiesProfit, propertyTaxes, parseInt(localStorage.residentLeaveLoss), staffSalaries)
-
     localStorage.residentLeaveLoss = 0
     let z = Math.random() * 1000
 
@@ -275,6 +280,7 @@ function gameLoopAction() {
     console.log(localStorage.rating, randomRatingChange)
     localStorage.rating = round(parseFloat(localStorage.rating) + randomRatingChange, 2)
     sync()
+    syncTable(totalResidents, revenueRent, rentProfit, amenitiesProfit, propertyTaxes, parseInt(localStorage.residentLeaveLoss), staffSalaries)
 
 }
 

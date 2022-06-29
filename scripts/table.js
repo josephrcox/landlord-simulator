@@ -84,11 +84,16 @@ export function syncTable(totalResidents, revenueRent, rentProfit, amenitiesProf
             localStorage.setItem('profiting', true)
         }
     gameTable.rows[13].insertCell(column).innerText = "$"+((rentProfit + amenitiesProfit + propertyTaxes + residentLeaveLoss)*parseFloat(localStorage.ownership)).toLocaleString()
+        document.getElementById('stats-profit-value').innerHTML = ""
         if ((rentProfit + amenitiesProfit + propertyTaxes + residentLeaveLoss) <= 0) {
             gameTable.rows[13].cells[1].style.backgroundColor = badColor
+            document.getElementById('stats-profit-value').innerHTML += "<span style='font-size:17px;color:"+badColor+";'>-$"+((rentProfit + amenitiesProfit + propertyTaxes + residentLeaveLoss)*parseFloat(localStorage.ownership)).toLocaleString()+"</span>"
         } else {
             gameTable.rows[13].cells[1].style.backgroundColor = goodColor
+            document.getElementById('stats-profit-value').innerHTML += "<span style='font-size:17px;color:"+goodColor+"'>+$"+((rentProfit + amenitiesProfit + propertyTaxes + residentLeaveLoss)*parseFloat(localStorage.ownership)).toLocaleString()+"</span>"
         }
-    
+        
     localStorage.history = gameTable.innerHTML
+    
+    
 }
