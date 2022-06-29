@@ -66,6 +66,7 @@ body {
     margin-top: 7px;
     display: flex;
     overflow-x: auto;
+    padding-top: 15px;
 }
 
 
@@ -149,7 +150,7 @@ body {
     border: 1px solid black;
     margin-block: 6px;
     margin-inline: 10px;
-    width: auto;
+    width: 100vw;
 }
 
 #toggle-speed,

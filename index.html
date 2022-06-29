@@ -29,7 +29,10 @@
     <div class="game">
         <div class="game-top">
             <div id="stats">
-                <input type="text" id="name" placeholder="Your company name" autocomplete="off" style="font-size: 24px;">
+                <div>
+                    <input type="text" id="name" placeholder="Your company name" autocomplete="off" style="font-size: 24px;">
+                </div>
+                
                 <button id="toggle-speed" data-enabled="false">
                     <span id="speed">Normal speed</span>
                 </button>
@@ -73,11 +76,13 @@
             document.body.classList.remove('darkmode')
             document.getElementsByClassName('game')[0].style.backgroundColor = 'white'
             document.getElementById('toggle-pause').style.backgroundColor = 'white'
+            document.getElementById('name').style.color = 'black'
         } else {
             localStorage.darkmode = "true"
             document.body.classList.add('darkmode')
             document.getElementsByClassName('game')[0].style.backgroundColor = 'black'
             document.getElementById('toggle-pause').style.backgroundColor = 'black'
+            document.getElementById('name').style.color = 'white'
         }
 
         function toggleDarkMode() {
@@ -86,11 +91,13 @@
                 document.body.classList.add('darkmode')
                 document.getElementsByClassName('game')[0].style.backgroundColor = 'black'
                 document.getElementById('toggle-pause').style.backgroundColor = 'black'
+                document.getElementById('name').style.color = 'white'
             } else {
                 localStorage.darkmode = "false"
                 document.body.classList.remove('darkmode')
                 document.getElementsByClassName('game')[0].style.backgroundColor = 'white'
                 document.getElementById('toggle-pause').style.backgroundColor = 'white'
+                document.getElementById('name').style.color = 'black'
             }
         }
         function restart() {
