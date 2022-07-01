@@ -1,8 +1,8 @@
 import { changeCash, changeRating } from "./modifiers.js"
-import { sync } from "./script.js"
+import { sync, paused } from "./script.js"
 const game_center = document.querySelector('.game-center')
-const resleave_rating = -0.1
-const resjoin_rating = 0.1
+const resleave_rating = -0.2
+const resjoin_rating = 0.2
 export let buyNewBuilding
 
 export let AllBuildings = []
@@ -194,22 +194,25 @@ function holdDownAction(btn, action, param, start, speedup) {
 
 function rentOut(building) {
     console.log(building)
-    if (parseInt(localStorage.cash) >= building.rent) {
-        if (building.residents < 40) {
-            let x = (Math.floor(Math.random() * (100 + (building.rent/5))))
-            let chance = x <= parseFloat(localStorage.rating)
-            if (chance) {
-                changeCash((building.rent / 20) * -1)
-                building.residents += 1
-                changeRating(resjoin_rating)
-            } else {
-                changeCash((building.rent / 80) * -1)
+    if (!paused) {
+        if (parseInt(localStorage.cash) >= building.rent) {
+            if (building.residents < 40) {
+                let x = (Math.floor(Math.random() * (100 + (building.rent/5))))
+                let chance = x <= parseFloat(localStorage.rating)
+                if (chance) {
+                    changeCash((building.rent / 20) * -1)
+                    building.residents += 1
+                    changeRating(resjoin_rating)
+                } else {
+                    changeCash((building.rent / 80) * -1)
+                }
+        
             }
-    
         }
+        sync()
+        syncBuildingData(building)
     }
-    sync()
-    syncBuildingData(building)
+
 }
 
 export function residentLeave(override) {
@@ -256,7 +259,7 @@ function newAppt() {
             "available":40,
             "color":getRandomColor()
         })
-        changeRating(5)
+        changeRating(15)
         localStorage.game = JSON.stringify(b)
         sync()
         drawBuildings()

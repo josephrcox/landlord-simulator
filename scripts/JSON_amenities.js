@@ -130,7 +130,7 @@ export const amenities_list = [
     {
         title:"Quick turnover",
         id:"quickturnover",
-        happiness:-15,
+        happiness:-40,
         cost_upfront:0,
         cost_upfront_per_building:0,
         cost_monthly:0,
@@ -141,7 +141,7 @@ export const amenities_list = [
         revenue_monthly:0,
         revenue_monthly_random:false,
         revenue_monthly_min:0,
-        notes:"Less happy residents<br/>No more fixing units when people leave<br/>Significantly lower loss resident cost"
+        notes:"Much less happy residents<br/>No more fixing units when people leave<br/>Significantly lower loss resident cost"
     },
 ]
 

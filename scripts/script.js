@@ -23,7 +23,7 @@ let fastGameSpeed = 1000
  
 let renters = []
 
-let scenarioFrequency = 950 // out of 1000, how many ticks will trigger a new scenario (when >1 buildings)
+let scenarioFrequency = 900 // out of 1000, how many ticks will trigger a new scenario (when >1 buildings)
 
 const defaultGameSchema = {
         "buildings":[
@@ -98,49 +98,52 @@ let cripplingForCash = false
 let cripplingFor = 0
 
 export function sync() {
-    localStorage.rating = round(parseFloat(localStorage.rating), 3)
-    if (parseFloat(localStorage.rating) >= 100) {
-        stats_rating_value.innerHTML = '😍 ' + parseFloat(localStorage.rating)
-        rating = 3
-    } else if (parseFloat(localStorage.rating) >= 75) {
-        stats_rating_value.innerHTML = '🙂 ' + parseFloat(localStorage.rating)
-        rating = 2
-    } else if (parseFloat(localStorage.rating) >= 25) {
-        stats_rating_value.innerHTML = '😐 ' + parseFloat(localStorage.rating)
-        rating = 1
-    } else if (parseFloat(localStorage.rating) >= 0) {
-        stats_rating_value.innerHTML = '☹️ ' + parseFloat(localStorage.rating)
-        rating = 0
+    if (!paused) {
+        localStorage.rating = round(parseFloat(localStorage.rating), 3)
+        if (parseFloat(localStorage.rating) >= 100) {
+            stats_rating_value.innerHTML = '😍 ' + parseFloat(localStorage.rating)
+            rating = 3
+        } else if (parseFloat(localStorage.rating) >= 75) {
+            stats_rating_value.innerHTML = '🙂 ' + parseFloat(localStorage.rating)
+            rating = 2
+        } else if (parseFloat(localStorage.rating) >= 25) {
+            stats_rating_value.innerHTML = '😐 ' + parseFloat(localStorage.rating)
+            rating = 1
+        } else if (parseFloat(localStorage.rating) >= 0) {
+            stats_rating_value.innerHTML = '☹️ ' + parseFloat(localStorage.rating)
+            rating = 0
+        }
+    
+        for (let i=0;i<amenities_list.length;i++) {
+            document.getElementById('toggle-'+amenities_list[i].id).dataset.enabled = localStorage.getItem('amenities_'+amenities_list[i].id)
+        }
+        if (stats_cash_value.innerHTML.includes('<')) {
+            console.log("includes")
+            let newcashtext = "$"+parseInt(localStorage.cash).toLocaleString() + stats_cash_value.innerHTML.split('<')[1] 
+            stats_cash_value.innerHTML = newcashtext
+        } else {
+            stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
+        }
+    
+    
+        let totalAvailable = 0
+        let totalResidents = 0
+        for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++) {
+            totalAvailable += (40 - JSON.parse(localStorage.game).buildings[i].residents)
+            totalResidents +=  JSON.parse(localStorage.game).buildings[i].residents
+        }
+    
+        if (parseInt(localStorage.cash) >= 600000) {
+            buyNewBuilding.style.backgroundColor = 'yellow'
+        } else {
+            buyNewBuilding.style.backgroundColor = 'gray'
+        }
     }
-
-    for (let i=0;i<amenities_list.length;i++) {
-        document.getElementById('toggle-'+amenities_list[i].id).dataset.enabled = localStorage.getItem('amenities_'+amenities_list[i].id)
-    }
-    if (stats_cash_value.innerHTML.includes('<')) {
-        console.log("includes")
-        let newcashtext = "$"+parseInt(localStorage.cash).toLocaleString() + stats_cash_value.innerHTML.split('<')[1] 
-        stats_cash_value.innerHTML = newcashtext
-    } else {
-        stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
-    }
-
-
-    let totalAvailable = 0
-    let totalResidents = 0
-    for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++) {
-        totalAvailable += (40 - JSON.parse(localStorage.game).buildings[i].residents)
-        totalResidents +=  JSON.parse(localStorage.game).buildings[i].residents
-    }
-
-    if (parseInt(localStorage.cash) >= 600000) {
-        buyNewBuilding.style.backgroundColor = 'yellow'
-    } else {
-        buyNewBuilding.style.backgroundColor = 'gray'
-    }
+    
 }
 
 ////////////////////////////////
-let paused = false
+export let paused = false
 
 let gameLoop = setInterval(function() {
     if (paused == false) {
@@ -237,7 +240,7 @@ function gameLoopAction() {
     }
 
     let amenitiesProfit = -1 * costOfExtras
-    let propertyTaxes = (Math.round((1200 * JSON.parse(localStorage.game).buildings.length * (JSON.parse(localStorage.game).buildings.length * 2.3) + 1))*-1)
+    let propertyTaxes = (Math.round((1200 * JSON.parse(localStorage.game).buildings.length * (JSON.parse(localStorage.game).buildings.length * 1.8) + 1))*-1)
     
     let staffSalaries = (parseInt(localStorage.rentalAssistants) * ((totalResidents * 12))) + parseInt(localStorage.salaries)
     localStorage.residentLeaveLoss = 0
@@ -274,7 +277,7 @@ function gameLoopAction() {
     }
     localStorage.thisMonthInvestmentTotal = "0"
 
-    let randomRatingChange = ((Math.round(Math.random()) * 2 - 1) * Math.ceil(Math.random() * (1.5 * parseInt(JSON.parse(localStorage.game).buildings.length))))
+    let randomRatingChange = ((Math.round(Math.random()) * 2 - 1) * Math.ceil(Math.random() * (0.5 * parseInt(JSON.parse(localStorage.game).buildings.length))))
     console.log(localStorage.rating, randomRatingChange)
     localStorage.rating = round(parseFloat(localStorage.rating) + randomRatingChange, 2)
     sync()
