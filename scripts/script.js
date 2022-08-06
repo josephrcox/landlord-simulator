@@ -118,7 +118,6 @@ export function sync() {
             document.getElementById('toggle-'+amenities_list[i].id).dataset.enabled = localStorage.getItem('amenities_'+amenities_list[i].id)
         }
         if (stats_cash_value.innerHTML.includes('<')) {
-            //console.log("includes")
             let newcashtext = "$"+parseInt(localStorage.cash).toLocaleString() + stats_cash_value.innerHTML.split('<')[1] 
             stats_cash_value.innerHTML = newcashtext
         } else {
@@ -244,7 +243,6 @@ function gameLoopAction() {
     
     let staffSalaries = (parseInt(localStorage.rentalAssistants) * ((totalResidents * 12))) + parseInt(localStorage.salaries)
     let z = Math.random() * 1000
-    //console.log(z)
 
     if (z > scenarioFrequency && (JSON.parse(localStorage.game).buildings.length > 1)) {
         newScenario()
@@ -277,7 +275,6 @@ function gameLoopAction() {
     localStorage.thisMonthInvestmentTotal = "0"
 
     let randomRatingChange = ((Math.round(Math.random()) * 2 - 1) * Math.ceil(Math.random() * (0.5 * parseInt(JSON.parse(localStorage.game).buildings.length))))
-    //console.log(localStorage.rating, randomRatingChange)
     localStorage.rating = round(parseFloat(localStorage.rating) + randomRatingChange, 2)
     sync()
     syncTable(totalResidents, revenueRent, rentProfit, amenitiesProfit, propertyTaxes, parseInt(localStorage.residentLeaveLoss), staffSalaries)

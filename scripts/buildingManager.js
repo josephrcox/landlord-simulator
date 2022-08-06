@@ -21,8 +21,6 @@ export const bldg = {
         } else {
             a.style.backgroundImage = 'url(./buildings/gray.svg)'
         }
-
-        //console.log(a.style.backgroundImage)
     
         const head = document.createElement('div')
         head.classList.add('building_head')
@@ -193,7 +191,6 @@ function holdDownAction(btn, action, param, start, speedup) {
 
 
 function rentOut(building) {
-    //console.log(building)
     if (!paused) {
         if (parseInt(localStorage.cash) >= building.rent) {
             if (building.residents < residentsPerBuilding) {
@@ -222,13 +219,11 @@ export function residentLeave(override) {
     } else {
         x = (Math.floor(Math.random() * ((parseInt(localStorage.rating)/6))))
     }
-    //console.log(x)
 
     let chance = (x == 0)
 
     if (chance) {
         let bldg = Math.floor(Math.random() * AllBuildings.length)
-        //console.log(bldg)
         let leaving = Math.floor(Math.random() * (AllBuildings[bldg].residents * ((100 - (parseFloat(localStorage.rating)+25))/100)))
         if (leaving < 0) {
             leaving = 0
@@ -268,7 +263,6 @@ function newAppt() {
 }
 
 function syncBuildingData(building) {
-    //console.log(building)
     building.update()
     localStorage.game = JSON.stringify({buildings:AllBuildings})
     if (parseInt(localStorage.cash) >= 600000) {
