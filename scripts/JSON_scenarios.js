@@ -266,7 +266,8 @@ export const scenarios_list = [
     alertMSG_2:"",
     requiresPool:false,
     skipWithSecurity:false,
-    securityAlert:""
+    securityAlert:"",
+    oneoff:false
 },
 
 */

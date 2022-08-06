@@ -143,6 +143,23 @@ export const amenities_list = [
         revenue_monthly_min:0,
         notes:"Much less happy residents<br/>No more fixing units when people leave<br/>Significantly lower loss resident cost"
     },
+    {
+        title:"Close encounters",
+        id:"closeencounters",
+        happiness:-25,
+        cost_upfront:0,
+        cost_upfront_per_building:0,
+        cost_monthly:0,
+        cost_monthly_per_resident:0, // if random is set, this is the max
+        cost_monthly_per_resident_random:false,
+        cost_monthly_per_resident_min:0,
+        cost_monthly_per_building:0,
+        revenue_monthly:0,
+        revenue_monthly_random:false,
+        revenue_monthly_min:0,
+        notes:"Less happy residents<br/>Squeeze more people into your buildings"
+    },
+    
 ]
 
 /* 

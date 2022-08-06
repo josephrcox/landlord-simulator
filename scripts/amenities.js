@@ -1,6 +1,6 @@
 import { amenities_list } from "./JSON_amenities.js"
 import { changeCash, changeRating } from "./modifiers.js"
-import { sync } from "./script.js"
+import { sync, residentsPerBuilding, setResidentsPerBuilding } from "./script.js"
 
 
 export function showAmenities() {
@@ -18,6 +18,9 @@ export function showAmenities() {
                 button.dataset.enabled = 'false'
                 changeRating(-1 * a[i].happiness )
                 localStorage.setItem('amenities_'+a[i].id, false) 
+                if (a[i].id == "closeencounters") {
+                    setResidentsPerBuilding(20)
+                }
 
             } else {
                 if (a[i].cost_upfront > 0) {
@@ -35,6 +38,9 @@ export function showAmenities() {
                         console.error("Not enough cash")
                         return;
                     }
+                }
+                if (a[i].id == "closeencounters") {
+                    setResidentsPerBuilding(40)
                 }
                 button.dataset.enabled = 'true'
                 localStorage.setItem('amenities_'+a[i].id, true) 

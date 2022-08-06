@@ -2,7 +2,7 @@ import { gameOver } from "./modal.js"
 import { changeCash, changeRating } from "./modifiers.js"
 import { newScenario } from "./scenario_generator.js"
 import { syncTable, table_init } from "./table.js"
-import { drawBuildings, residentLeave, buyNewBuilding, getRandomColor } from "./buildingManager.js"
+import { drawBuildings, residentLeave, buyNewBuilding, getRandomColor, resleave_rating } from "./buildingManager.js"
 import { showAmenities } from "./amenities.js"
 import { amenities_list } from "./JSON_amenities.js"
 
@@ -14,8 +14,8 @@ let rating = 0
 // const logs = document.getElementById('logs')
 
 const startingCash = 100000
-const residentsPerBuilding = 40
-const percentOfRentAsProfit = 0.2
+export var residentsPerBuilding = localStorage.residentsperbuilding || 20
+const percentOfRentAsProfit = 0.3
 
 let gameSpeed = 5000
 let normalGameSpeed = 5000
@@ -75,7 +75,7 @@ window.onload = function() {
         localStorage.ownership = 1.0
         localStorage.thisMonthInvestmentTotal = "0"
         localStorage.history = ""
-        localStorage.oneoffArray = ""
+        localStorage.oneoffArray = "{'array':[]}"
     } 
     stats_cash_value.innerText = "$"+parseInt(localStorage.cash).toLocaleString()
 
@@ -118,7 +118,7 @@ export function sync() {
             document.getElementById('toggle-'+amenities_list[i].id).dataset.enabled = localStorage.getItem('amenities_'+amenities_list[i].id)
         }
         if (stats_cash_value.innerHTML.includes('<')) {
-            console.log("includes")
+            //console.log("includes")
             let newcashtext = "$"+parseInt(localStorage.cash).toLocaleString() + stats_cash_value.innerHTML.split('<')[1] 
             stats_cash_value.innerHTML = newcashtext
         } else {
@@ -129,7 +129,7 @@ export function sync() {
         let totalAvailable = 0
         let totalResidents = 0
         for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++) {
-            totalAvailable += (40 - JSON.parse(localStorage.game).buildings[i].residents)
+            totalAvailable += (residentsPerBuilding - JSON.parse(localStorage.game).buildings[i].residents)
             totalResidents +=  JSON.parse(localStorage.game).buildings[i].residents
         }
     
@@ -243,15 +243,14 @@ function gameLoopAction() {
     let propertyTaxes = (Math.round((1200 * JSON.parse(localStorage.game).buildings.length * (JSON.parse(localStorage.game).buildings.length * 1.8) + 1))*-1)
     
     let staffSalaries = (parseInt(localStorage.rentalAssistants) * ((totalResidents * 12))) + parseInt(localStorage.salaries)
-    localStorage.residentLeaveLoss = 0
     let z = Math.random() * 1000
+    //console.log(z)
 
     if (z > scenarioFrequency && (JSON.parse(localStorage.game).buildings.length > 1)) {
         newScenario()
     }
 
     totalMonthlyProfit += amenitiesProfit + rentProfit + propertyTaxes + staffSalaries
-    console.log(totalMonthlyProfit)
     if (totalMonthlyProfit > 0) {
         changeCash(totalMonthlyProfit * parseFloat(localStorage.ownership))
     } else {
@@ -278,11 +277,29 @@ function gameLoopAction() {
     localStorage.thisMonthInvestmentTotal = "0"
 
     let randomRatingChange = ((Math.round(Math.random()) * 2 - 1) * Math.ceil(Math.random() * (0.5 * parseInt(JSON.parse(localStorage.game).buildings.length))))
-    console.log(localStorage.rating, randomRatingChange)
+    //console.log(localStorage.rating, randomRatingChange)
     localStorage.rating = round(parseFloat(localStorage.rating) + randomRatingChange, 2)
     sync()
     syncTable(totalResidents, revenueRent, rentProfit, amenitiesProfit, propertyTaxes, parseInt(localStorage.residentLeaveLoss), staffSalaries)
+    localStorage.residentLeaveLoss = 0
+}
 
+export function setResidentsPerBuilding(x) {
+    localStorage.residentsperbuilding = x
+    residentsPerBuilding = parseInt(localStorage.residentsperbuilding)
+    let game = JSON.parse(localStorage.game)
+    for (let i=0;i<JSON.parse(localStorage.game).buildings.length;i++){
+        let b = game.buildings[i]
+        if (b.residents > residentsPerBuilding) {
+            changeCash(-1 * (b.rent * 1 * (b.residents - residentsPerBuilding)))
+            changeRating(resleave_rating * (b.residents - residentsPerBuilding))
+            localStorage.residentLeaveLoss = parseInt(localStorage.residentLeaveLoss) - ((b.rent * 3) * (b.residents - residentsPerBuilding))
+            b.residents = residentsPerBuilding
+        }
+        
+    }
+    localStorage.game = JSON.stringify(game)
+    drawBuildings()
 }
 
 function round(value, decimals) {

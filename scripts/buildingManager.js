@@ -1,7 +1,7 @@
 import { changeCash, changeRating } from "./modifiers.js"
-import { sync, paused } from "./script.js"
+import { sync, paused, residentsPerBuilding } from "./script.js"
 const game_center = document.querySelector('.game-center')
-const resleave_rating = -0.2
+export const resleave_rating = -0.2
 const resjoin_rating = 0.2
 export let buyNewBuilding
 
@@ -22,7 +22,7 @@ export const bldg = {
             a.style.backgroundImage = 'url(./buildings/gray.svg)'
         }
 
-        console.log(a.style.backgroundImage)
+        //console.log(a.style.backgroundImage)
     
         const head = document.createElement('div')
         head.classList.add('building_head')
@@ -37,7 +37,7 @@ export const bldg = {
 
         holdDownAction(rent, rentOut, this, 50, 0);
 
-        if (this.residents >= 40) {
+        if (this.residents >= residentsPerBuilding) {
             rent.style.backgroundColor = 'gray'
         } else {
             rent.style.backgroundColor = ''
@@ -47,7 +47,7 @@ export const bldg = {
 
         const resCount = document.createElement('span')
         resCount.style.marginTop = '2px'
-        resCount.innerHTML = this.residents +" / 40"
+        resCount.innerHTML = this.residents +" / "+residentsPerBuilding
         resCount.id = "resCount_"+a.dataset.index
         a.append(resCount)
 
@@ -79,9 +79,9 @@ export const bldg = {
         game_center.append(a)
     }, 
     update() {
-        document.getElementById('resCount_'+this.index).innerHTML = this.residents +" / 40"
+        document.getElementById('resCount_'+this.index).innerHTML = this.residents +" / "+residentsPerBuilding
         document.getElementById('rentSpan_'+this.index).innerHTML = "$" + this.rent
-        if (this.residents >= 40) {
+        if (this.residents >= residentsPerBuilding) {
             document.getElementById("buildingRentOut_"+this.index).style.backgroundColor = 'gray'
         } else {
             document.getElementById("buildingRentOut_"+this.index).style.backgroundColor = ''
@@ -193,10 +193,10 @@ function holdDownAction(btn, action, param, start, speedup) {
 
 
 function rentOut(building) {
-    console.log(building)
+    //console.log(building)
     if (!paused) {
         if (parseInt(localStorage.cash) >= building.rent) {
-            if (building.residents < 40) {
+            if (building.residents < residentsPerBuilding) {
                 let x = (Math.floor(Math.random() * (100 + (building.rent/5))))
                 let chance = x <= parseFloat(localStorage.rating)
                 if (chance) {
@@ -222,13 +222,13 @@ export function residentLeave(override) {
     } else {
         x = (Math.floor(Math.random() * ((parseInt(localStorage.rating)/6))))
     }
-    console.log(x)
+    //console.log(x)
 
     let chance = (x == 0)
 
     if (chance) {
         let bldg = Math.floor(Math.random() * AllBuildings.length)
-        console.log(bldg)
+        //console.log(bldg)
         let leaving = Math.floor(Math.random() * (AllBuildings[bldg].residents * ((100 - (parseFloat(localStorage.rating)+25))/100)))
         if (leaving < 0) {
             leaving = 0
@@ -256,7 +256,7 @@ function newAppt() {
         b.buildings.push({
             "rent":0,
             "residents":0,
-            "available":40,
+            "available":residentsPerBuilding,
             "color":getRandomColor()
         })
         changeRating(15)
@@ -268,7 +268,7 @@ function newAppt() {
 }
 
 function syncBuildingData(building) {
-    console.log(building)
+    //console.log(building)
     building.update()
     localStorage.game = JSON.stringify({buildings:AllBuildings})
     if (parseInt(localStorage.cash) >= 600000) {

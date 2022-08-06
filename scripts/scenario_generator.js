@@ -19,14 +19,15 @@ export function newScenario(override) {
     if (override) {
         x = override;
     }
-    if (JSON.parse(localStorage.oneoffArray).indexOf(x) != -1 && scenarios_list[x].oneoff == true) {
-        console.log("cant reuse "+scenarios_list[x].title)
+    //console.log(scenarios_list[x])
+    if (JSON.parse(localStorage.oneoffArray).array.indexOf(x) != -1 && scenarios_list[x].oneoff == true) {
+        //console.log("cant reuse "+scenarios_list[x].title)
         newScenario()
         return;
     }
     localStorage.currentScenario = x
     if (scenarios_list[x].requiresPool == true && localStorage.amenities_pool == "false") {
-        console.log("dont have pool")
+        //console.log("dont have pool")
         newScenario()
         return;
     }
@@ -51,7 +52,7 @@ export function newScenario(override) {
 
     if (scenarios_list[x].title.includes("~~")) {
         let percentOfStock = (scenarios_list[x].a.match(/\d+/))/10 // 10% is 1, kind of like a multiplier, 1% is 0.1, 40% is 4
-        console.log(percentOfStock)
+        //console.log(percentOfStock)
         if (localStorage.currentScenarioVariable == "null" || localStorage.currentScenarioVariable == null || localStorage.currentScenarioVariable == "0") {
             let titleSplit = scenarios_list[x].title.split("~~")
             if (localStorage.profiting == "true") {
@@ -60,7 +61,7 @@ export function newScenario(override) {
                 Z = Math.floor(Math.random() * ((parseInt(localStorage.cash)  * percentOfStock) / 5))
             }
             
-            console.log("random number is "+Z)
+            //console.log("random number is "+Z)
             modal.children[0].innerHTML = "<br/><br/>"+titleSplit[0]+"$"+parseInt(Z).toLocaleString()
             localStorage.setItem('currentScenarioVariable', Z)
         } else {
@@ -82,7 +83,7 @@ export function newScenario(override) {
     }
 
     let ooa = JSON.parse(localStorage.oneoffArray)
-    ooa.push(x)
+    ooa.array.push(x)
     localStorage.oneoffArray = JSON.stringify(ooa)
 
 }
@@ -97,7 +98,7 @@ function optionChosen(choice) {
         } else if (choice == "b") {
             chosen = scenarios_list[x].b_outcome.split('&')
         }
-        console.log(chosen)
+        //console.log(chosen)
     
         for (let i=0;i<chosen.length;i++) {
             let y = chosen[i].split(',')
@@ -107,7 +108,7 @@ function optionChosen(choice) {
                         changeCash(parseInt(localStorage.currentScenarioVariable))
                     } else if (y[1].includes('RAN')) {
                         let ran = Math.floor(Math.random() * (parseInt(y[1].split('RAN')[1])))
-                        console.log("ran is "+ran)
+                        //console.log("ran is "+ran)
                         changeCash(parseInt(ran))
                     } else {
                         changeCash(parseInt(y[1]))

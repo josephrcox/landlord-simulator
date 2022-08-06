@@ -30,7 +30,7 @@ export function table_init() {
 
 export function syncTable(totalResidents, revenueRent, rentProfit, amenitiesProfit, propertyTaxes, residentLeaveLoss, staffSalaries) {
     let column = 1 // creates columns from the left
-    let badColor = 'red'
+    let badColor = '#fd7f7f'
     let goodColor = '#0ac80a'
     gameTable.rows[0].insertCell(column).innerText = "Month "+localStorage.month
     gameTable.rows[1].insertCell(column).innerText = (parseFloat(localStorage.ownership) * 100) + "%"
@@ -65,6 +65,7 @@ export function syncTable(totalResidents, revenueRent, rentProfit, amenitiesProf
             gameTable.rows[7].cells[1].style.backgroundColor = goodColor
         }
     gameTable.rows[8].insertCell(column).innerText = "$"+propertyTaxes.toLocaleString()
+    gameTable.rows[8].cells[1].style.backgroundColor = badColor
     gameTable.rows[9].insertCell(column).innerText = "$"+localStorage.thisMonthInvestmentTotal.toLocaleString()
 
     gameTable.rows[10].insertCell(column).innerText = "$"+residentLeaveLoss.toLocaleString()
