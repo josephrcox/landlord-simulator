@@ -4,7 +4,8 @@ import { sync, residentsPerBuilding, setResidentsPerBuilding } from "./script.js
 
 
 export function showAmenities() {
-    document.getElementById('amenities_container').innerHTML = ""
+    document.getElementById('amenities').innerHTML = ""
+    document.getElementById('amenities_selected').innerHTML = ""
     let a = amenities_list
     for (let i=0;i<a.length;i++) {
         const button = document.createElement('button')
@@ -57,9 +58,9 @@ export function showAmenities() {
         button.append(div)
 
         if (button.dataset.enabled == "true") {
-            document.getElementById('amenities_container').insertBefore(button, document.getElementById('amenities_container').firstChild)
+            document.getElementById('amenities_selected').insertBefore(button, document.getElementById('amenities_selected').firstChild)
         } else {
-            document.getElementById('amenities_container').append(button)
+            document.getElementById('amenities').append(button)
         }
         
     }

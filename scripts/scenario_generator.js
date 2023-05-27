@@ -1,6 +1,6 @@
 import { scenarios_list } from "./JSON_scenarios.js";
 import { pause } from "./script.js";
-import { changeCash, changeRating, changeResidents, changePool, hireRentalAssistant, changeBuildings, changeOwnership, changeSalary } from "./modifiers.js";
+import { changeCash, changeRating, changeResidents, changePool, changeBuildings, changeOwnership, changeSalary } from "./modifiers.js";
 
 const modal = document.getElementById('scenariomodal')
 const overlay = document.getElementById('overlay')
@@ -122,9 +122,6 @@ function optionChosen(choice) {
                 case "amenities_pool":
                     changePool(y[1])
                     break;
-                case "rentalAssistant":
-                    hireRentalAssistant()
-                    break;
                 case "building":
                     changeBuildings(y[1])
                     break;
@@ -145,6 +142,7 @@ function optionChosen(choice) {
             }
         }
     }
+    localStorage.currentScenarioVariable = ""
     localStorage.currentScenario = -1
     overlay.style.display = 'none'
     modal.style.display = 'none'

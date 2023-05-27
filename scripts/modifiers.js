@@ -24,13 +24,8 @@ export function changePool(x) {
     sync()
 }
 
-export function hireRentalAssistant() {
-    localStorage.rentalAssistants = parseInt(localStorage.rentalAssistants) + 1
-    sync()
-}
-
 export function changeSalary(x) {
-    localStorage.salaries = parseINt(localStorage.salaries) + x
+    localStorage.salaries = parseInt(localStorage.salaries) + parseInt(x)
 }
 
 export function changeBuildings(x) {
